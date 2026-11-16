@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resultados · Convivio Familiar 29 de noviembre</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b2418">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--pine:#0b2418;--pine2:#123a27;--red:#c8102e;--gold:#f2c14e;--cream:#fff8ef;--ink:#2b1d14;--muted:#7a6656;--line:#eadbc6;--green:#1f9d55}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',system-ui,sans-serif;color:var(--ink);min-height:100vh;
+    background:radial-gradient(ellipse at 50% -10%,#1f5a3c 0%,transparent 60%),linear-gradient(180deg,var(--pine2),var(--pine) 70%);background-attachment:fixed}
+  .stripe{height:8px;background:repeating-linear-gradient(-45deg,var(--red) 0 14px,#fff 14px 28px)}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px 16px 50px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#fff;margin-bottom:20px}
+  h1{font-family:'Mountains of Christmas',cursive;font-size:clamp(2rem,6vw,2.8rem);line-height:1;text-shadow:0 2px 0 var(--red)}
+  .sub{opacity:.85;font-weight:700;margin-top:4px}
+  .live{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:.9rem;background:rgba(0,0,0,.25);padding:8px 14px;border-radius:999px}
+  .dot{width:9px;height:9px;border-radius:50%;background:#3bd16f;box-shadow:0 0 0 0 #3bd16f;animation:pulse 1.8s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+
+  .panel{background:var(--cream);border-radius:20px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+  .stat{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 10px;text-align:center}
+  .stat .n{font-size:2.1rem;font-weight:900;line-height:1.1}
+  .stat .t{font-size:.8rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .stat.total{background:var(--red);border-color:var(--red);color:#fff}
+  .stat.total .t{color:#ffe3e7}
+  .stat .e{font-size:1.3rem}
+
+  .tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .seg{display:inline-flex;background:#fff;border:2px solid var(--line);border-radius:12px;overflow:hidden}
+  .seg button{border:0;background:none;font:inherit;font-weight:800;padding:9px 14px;cursor:pointer;color:var(--muted)}
+  .seg button.on{background:var(--pine2);color:#fff}
+  .search{flex:1;min-width:180px;font:inherit;font-weight:700;padding:10px 14px;border-radius:12px;border:2px solid var(--line);background:#fff}
+  .search:focus{outline:0;border-color:var(--gold)}
+  .btn{border:0;font:inherit;font-weight:800;padding:10px 14px;border-radius:12px;cursor:pointer;background:var(--green);color:#fff;box-shadow:0 3px 0 #0f5e31}
+  .btn.alt{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+  .btn:active{transform:translateY(2px);box-shadow:none}
+
+  .tbl-wrap{overflow-x:auto;border-radius:14px;border:2px solid var(--line);background:#fff}
+  table{width:100%;border-collapse:collapse;min-width:620px}
+  th,td{padding:11px 12px;text-align:left;border-bottom:1px solid #f1e6d6;font-size:.95rem}
+  th{background:#fbf3e7;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);cursor:pointer;user-select:none;white-space:nowrap}
+  th.num,td.num{text-align:center}
+  tr:last-child td{border-bottom:0}
+  tr.new td{animation:flash 2.4s}
+  @keyframes flash{0%,30%{background:#fff3c4}}
+  .tag{display:inline-block;padding:3px 10px;border-radius:999px;font-weight:800;font-size:.8rem}
+  .tag.si{background:#e5f8ec;color:#11713b}
+  .tag.no{background:#ffe8eb;color:#a40d26}
+  .fam{font-weight:800}
+  .when{color:var(--muted);font-size:.85rem;white-space:nowrap}
+  .edit{font-size:.72rem;color:var(--muted);font-weight:700}
+  .del{border:0;background:none;cursor:pointer;font-size:1rem;padding:4px 8px;border-radius:8px;color:#999}
+  .del:hover{background:#ffe8eb;color:var(--red)}
+  .del.confirm{background:var(--red);color:#fff;font-size:.78rem;font-weight:800}
+  .empty{text-align:center;padding:36px 10px;color:var(--muted);font-weight:700}
+  tfoot td{font-weight:900;background:#fbf3e7}
+
+  /* Login */
+  .login{max-width:380px;margin:12vh auto 0;text-align:center}
+  .login .panel{padding:30px 24px}
+  .login .big{font-size:3rem}
+  .login h2{font-family:'Mountains of Christmas',cursive;font-size:2rem;color:var(--red);margin:6px 0 4px}
+  .login p{color:var(--muted);font-weight:600;margin-bottom:16px}
+  .login input{width:100%;font:inherit;font-size:1.3rem;font-weight:900;text-align:center;letter-spacing:.2em;padding:13px;border-radius:14px;border:2px solid var(--line);margin-bottom:12px}
+  .login input:focus{outline:0;border-color:var(--gold)}
+  .login .btn{width:100%;padding:13px;font-size:1.05rem;background:var(--red);box-shadow:0 4px 0 #7d0a1c}
+  .err{color:var(--red);font-weight:800;margin-top:10px;min-height:1.2em}
+  .note{color:rgba(255,255,255,.6);text-align:center;font-size:.85rem;margin-top:18px}
+
+  @media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.stat.total{grid-column:span 2}}
+</style>
+</head>
+<body>
+<div class="stripe"></div>
+
+<section class="login" id="login">
+  <div class="panel">
+    <div class="big">🎅</div>
+    <h2>Panel de resultados</h2>
+    <p>Convivio Familiar · 29 de noviembre</p>
+    <form id="loginForm">
+      <input type="password" id="pin" placeholder="PIN" autocomplete="current-password" autofocus>
+      <button class="btn" type="submit">Entrar</button>
+      <div class="err" id="loginErr"></div>
+    </form>
+  </div>
+</section>
+
+<main class="wrap" id="app" hidden>
+  <header>
+    <div>
+      <h1>🎄 Confirmaciones del convivio</h1>
+      <div class="sub">Convivio Familiar Matutino · Domingo 29 de noviembre 2026</div>
+    </div>
+    <span class="live"><span class="dot"></span><span id="updated">En vivo</span></span>
+  </header>
+
+  <div class="panel">
+    <div class="stats">
+      <div class="stat"><div class="e">🏠</div><div class="n" id="sFam">0</div><div class="t">Familias asisten</div></div>
+      <div class="stat"><div class="e">👨‍👩</div><div class="n" id="sAd">0</div><div class="t">Adultos</div></div>
+      <div class="stat"><div class="e">🧒</div><div class="n" id="sNi">0</div><div class="t">Niños</div></div>
+      <div class="stat"><div class="e">💌</div><div class="n" id="sNo">0</div><div class="t">No asisten</div></div>
+      <div class="stat total"><div class="e">🎉</div><div class="n" id="sTot">0</div><div class="t">Total personas</div></div>
+    </div>
+
+    <div class="tools">
+      <div class="seg" id="seg">
+        <button data-f="all" class="on">Todos</button>
+        <button data-f="si">Asisten</button>
+        <button data-f="no">No asisten</button>
+      </div>
+      <input class="search" id="q" type="search" placeholder="🔍 Buscar familia…">
+      <button class="btn alt" id="refresh" type="button">↻ Actualizar</button>
+      <button class="btn" id="csv" type="button">⬇ Descargar Excel (CSV)</button>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th data-k="fam">Familia</th><th data-k="asiste">¿Asiste?</th>
+          <th class="num" data-k="adultos">Adultos</th><th class="num" data-k="ninos">Niños</th><th class="num" data-k="total">Total</th>
+          <th data-k="actualizado">Respondió</th><th></th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+        <tfoot id="foot"></tfoot>
+      </table>
+    </div>
+  </div>
+  <p class="note">Se actualiza solo cada 20 segundos. Si una familia vuelve a enviar con el mismo nombre, se actualiza su respuesta.</p>
+</main>
+
+<script>
+const store = {
+  get(k){ try { return sessionStorage.getItem(k); } catch { return null; } },
+  set(k,v){ try { sessionStorage.setItem(k,v); } catch {} },
+  del(k){ try { sessionStorage.removeItem(k); } catch {} },
+};
+let PIN = store.get('pin') || '';
+let items = [], filter = 'all', query = '', sortK = 'actualizado', sortDir = -1, seen = null, lastLoad = 0;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const dt = new Intl.DateTimeFormat('es-GT', { timeZone: 'America/Guatemala', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+
+async function load(fromLogin) {
+  try {
+    const r = await fetch('/api/resultados', { headers: { 'x-pin': PIN }, cache: 'no-store' });
+    const j = await r.json().catch(() => ({}));
+    if (r.status === 401) { store.del('pin'); showLogin(fromLogin ? 'PIN incorrecto' : ''); return; }
+    if (!r.ok) throw new Error(j.error || 'Error');
+    store.set('pin', PIN);
+    const prevIds = seen;
+    seen = new Set(j.items.map(i => i.id + i.actualizado));
+    items = j.items.map(i => ({ ...i, fam: `${i.nombre} ${i.apellidos}`, total: i.adultos + i.ninos, _new: prevIds && !prevIds.has(i.id + i.actualizado) }));
+    lastLoad = Date.now();
+    $('login').hidden = true; $('app').hidden = false;
+    render();
+  } catch (e) {
+    if (fromLogin) $('loginErr').textContent = e.message;
+    else $('updated').textContent = '⚠ ' + e.message;
+  }
+}
+
+function showLogin(err) { $('app').hidden = true; $('login').hidden = false; $('loginErr').textContent = err || ''; }
+
+function countUp(el, to) {
+  const from = +el.textContent || 0; if (from === to) return;
+  const t0 = performance.now();
+  const step = t => { const p = Math.min(1, (t - t0) / 600); el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+
+function render() {
+  const yes = items.filter(i => i.asiste);
+  const ad = yes.reduce((s, i) => s + i.adultos, 0), ni = yes.reduce((s, i) => s + i.ninos, 0);
+  countUp($('sFam'), yes.length); countUp($('sAd'), ad); countUp($('sNi'), ni);
+  countUp($('sNo'), items.length - yes.length); countUp($('sTot'), ad + ni);
+
+  let list = items.filter(i => filter === 'all' || (filter === 'si') === i.asiste);
+  if (query) { const q = query.toLowerCase(); list = list.filter(i => i.fam.toLowerCase().includes(q)); }
+  list.sort((a, b) => {
+    const A = a[sortK], B = b[sortK];
+    return (typeof A === 'string' ? A.localeCompare(B, 'es') : (A === B ? 0 : A > B ? 1 : -1)) * sortDir;
+  });
+
+  $('rows').innerHTML = list.length ? list.map(i => `
+    <tr class="${i._new ? 'new' : ''}">
+      <td class="fam">${esc(i.fam)}</td>
+      <td><span class="tag ${i.asiste ? 'si' : 'no'}">${i.asiste ? '✔ Sí' : '✖ No'}</span></td>
+      <td class="num">${i.asiste ? i.adultos : '—'}</td>
+      <td class="num">${i.asiste ? i.ninos : '—'}</td>
+      <td class="num"><b>${i.asiste ? i.total : '—'}</b></td>
+      <td class="when">${dt.format(new Date(i.actualizado))}${i.cambios ? ` <span class="edit">(editó ${i.cambios}×)</span>` : ''}</td>
+      <td><button class="del" data-id="${esc(i.id)}" title="Eliminar">🗑</button></td>
+    </tr>`).join('') : `<tr><td colspan="7" class="empty">${items.length ? 'Sin coincidencias' : '🎁 Aún no hay respuestas. ¡Comparte el enlace!'}</td></tr>`;
+
+  const ly = list.filter(i => i.asiste);
+  $('foot').innerHTML = list.length ? `<tr><td>${list.length} respuesta${list.length > 1 ? 's' : ''}</td><td></td>
+    <td class="num">${ly.reduce((s, i) => s + i.adultos, 0)}</td><td class="num">${ly.reduce((s, i) => s + i.ninos, 0)}</td>
+    <td class="num">${ly.reduce((s, i) => s + i.total, 0)}</td><td></td><td></td></tr>` : '';
+}
+
+// Eliminar con doble clic de confirmación
+$('rows').addEventListener('click', async e => {
+  const b = e.target.closest('.del'); if (!b) return;
+  if (!b.classList.contains('confirm')) {
+    document.querySelectorAll('.del.confirm').forEach(x => { x.classList.remove('confirm'); x.textContent = '🗑'; });
+    b.classList.add('confirm'); b.textContent = '¿Borrar?';
+    setTimeout(() => { if (b.isConnected) { b.classList.remove('confirm'); b.textContent = '🗑'; } }, 3500);
+    return;
+  }
+  b.textContent = '…';
+  await fetch('/api/resultados?id=' + encodeURIComponent(b.dataset.id), { method: 'DELETE', headers: { 'x-pin': PIN } });
+  load();
+});
+
+$('seg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  filter = b.dataset.f; document.querySelectorAll('#seg button').forEach(x => x.classList.toggle('on', x === b)); render();
+});
+$('q').addEventListener('input', e => { query = e.target.value.trim(); render(); });
+document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
+  const k = th.dataset.k; sortDir = sortK === k ? -sortDir : (k === 'fam' ? 1 : -1); sortK = k; render();
+}));
+$('refresh').onclick = () => load();
+
+$('csv').onclick = () => {
+  const head = ['Nombre', 'Apellidos', 'Asiste', 'Adultos', 'Niños', 'Total', 'Fecha respuesta'];
+  const q = v => `"${String(v).replace(/"/g, '""')}"`;
+  const lines = [head.map(q).join(',')].concat(items.map(i => [i.nombre, i.apellidos, i.asiste ? 'Sí' : 'No', i.adultos, i.ninos, i.total, dt.format(new Date(i.actualizado))].map(q).join(',')));
+  const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'convivio-29-noviembre.csv' });
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+$('loginForm').addEventListener('submit', e => { e.preventDefault(); PIN = $('pin').value.trim(); $('loginErr').textContent = ''; load(true); });
+
+setInterval(() => {
+  if ($('app').hidden) return;
+  const s = Math.round((Date.now() - lastLoad) / 1000);
+  $('updated').textContent = s < 5 ? 'En vivo · recién actualizado' : `En vivo · hace ${s} s`;
+}, 1000);
+setInterval(() => { if (!$('app').hidden && !document.hidden) load(); }, 20000);
+
+if (PIN) load(); else showLogin();
+</script>
+</body>
+</html>

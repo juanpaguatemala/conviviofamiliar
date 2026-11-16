@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convivio Familiar Navideño · 29 de noviembre 2026</title>
+<meta name="description" content="Confirma tu asistencia al Convivio Familiar Matutino del 29 de noviembre 2026">
+<meta property="og:title" content="🎄 Convivio Familiar Navideño · 29 de noviembre">
+<meta property="og:description" content="¡Confirma si tu familia nos acompaña!">
+<meta name="theme-color" content="#0b2418">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pine:#0b2418; --pine2:#123a27; --red:#c8102e; --red2:#e23a4f;
+    --gold:#f2c14e; --cream:#fff8ef; --ink:#2b1d14; --muted:#7a6656;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:'Nunito',system-ui,sans-serif; color:var(--ink);
+    background:
+      radial-gradient(ellipse at 50% -10%, #1f5a3c 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 110%, #3a0d14 0%, transparent 55%),
+      linear-gradient(180deg,var(--pine2),var(--pine) 70%);
+    background-attachment:fixed;
+    overflow-x:hidden;
+  }
+  #fx{position:fixed;inset:0;pointer-events:none;z-index:1}
+
+  /* Luces navideñas */
+  .lights{position:fixed;top:-6px;left:0;right:0;height:60px;z-index:3;display:flex;justify-content:space-around;pointer-events:none}
+  .lights::before{content:"";position:absolute;top:0;left:-5%;right:-5%;height:34px;
+    border-bottom:2px solid #1b1b1b;border-radius:0 0 50% 50%/0 0 100% 100%;}
+  .bulb{position:relative;top:24px;width:12px;height:20px;border-radius:50%;
+    animation:glow 1.6s ease-in-out infinite alternate}
+  .bulb::before{content:"";position:absolute;top:-5px;left:2px;width:8px;height:7px;background:#333;border-radius:2px}
+  .bulb:nth-child(4n+1){--c:#ff3b4e;animation-delay:0s}
+  .bulb:nth-child(4n+2){--c:#ffd54a;animation-delay:.4s}
+  .bulb:nth-child(4n+3){--c:#3bd16f;animation-delay:.8s}
+  .bulb:nth-child(4n+4){--c:#4ab3ff;animation-delay:1.2s}
+  .bulb:nth-child(odd){top:28px}
+  @keyframes glow{
+    from{background:var(--c);box-shadow:0 0 6px 2px var(--c),0 0 18px 4px var(--c);opacity:1}
+    to{background:color-mix(in srgb,var(--c) 35%,#222);box-shadow:none;opacity:.55}
+  }
+
+  .wrap{position:relative;z-index:2;max-width:620px;margin:0 auto;padding:78px 18px 50px}
+
+  header{text-align:center;color:#fff;margin-bottom:26px}
+  .kicker{display:inline-block;font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:.78rem;
+    color:var(--gold);border:1px solid rgba(242,193,78,.5);padding:6px 14px;border-radius:999px;background:rgba(0,0,0,.18)}
+  h1{font-family:'Mountains of Christmas',cursive;font-size:clamp(2.6rem,9vw,4.2rem);line-height:1;margin:14px 0 6px;
+    color:#fff;text-shadow:0 3px 0 var(--red),0 0 30px rgba(255,215,120,.35);animation:pop .9s cubic-bezier(.2,1.6,.4,1) both}
+  h1 .gold{color:var(--gold);text-shadow:0 3px 0 #8a1020,0 0 26px rgba(242,193,78,.6)}
+  .date{font-size:1.08rem;font-weight:700;opacity:.95}
+  .date b{color:var(--gold)}
+  .countdown{margin-top:14px;display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;font-weight:900;
+    padding:9px 18px;border-radius:999px;box-shadow:0 6px 0 #7d0a1c,0 10px 24px rgba(0,0,0,.35);animation:bounce 2.4s ease-in-out infinite}
+  @keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+  /* Tarjeta */
+  .card{position:relative;background:var(--cream);border-radius:22px;padding:62px 26px 28px;
+    box-shadow:0 24px 60px rgba(0,0,0,.45),inset 0 0 0 3px #fff,inset 0 0 0 6px var(--red);
+    animation:rise .7s .15s ease-out both}
+  @keyframes rise{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+  .bow{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-size:48px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));animation:wiggle 3s ease-in-out infinite}
+  @keyframes wiggle{0%,100%{transform:translateX(-50%) rotate(-6deg)}50%{transform:translateX(-50%) rotate(6deg)}}
+  .ornament{position:absolute;top:-6px;width:2px;background:#b9a27a;transform-origin:top center;animation:swing 3.2s ease-in-out infinite}
+  .ornament::after{content:"";position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#fff8 0 12%,var(--oc) 35%,color-mix(in srgb,var(--oc) 60%,#000) 100%);
+    box-shadow:0 4px 10px rgba(0,0,0,.3)}
+  .ornament.o1{left:26px;height:34px;--oc:var(--red)}
+  .ornament.o2{right:30px;height:48px;--oc:var(--gold);animation-delay:-1.4s}
+  @keyframes swing{0%,100%{transform:rotate(7deg)}50%{transform:rotate(-7deg)}}
+
+  .q{margin-top:22px}
+  .q:first-of-type{margin-top:8px}
+  .label{display:block;font-weight:900;font-size:1.06rem;margin-bottom:10px}
+  .label small{font-weight:600;color:var(--muted);font-size:.85rem}
+
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .choice{position:relative;cursor:pointer;border:2px solid #e8d9c5;border-radius:16px;background:#fff;padding:16px 10px;text-align:center;
+    font-weight:800;transition:transform .15s,border-color .2s,box-shadow .2s,background .2s;user-select:none}
+  .choice .e{display:block;font-size:2rem;margin-bottom:4px;transition:transform .3s}
+  .choice:hover{transform:translateY(-2px)}
+  .choice input{position:absolute;opacity:0;pointer-events:none}
+  .choice.yes:has(input:checked){border-color:#1f9d55;background:#ecfbf2;box-shadow:0 0 0 4px rgba(31,157,85,.15)}
+  .choice.no:has(input:checked){border-color:var(--red);background:#fff0f2;box-shadow:0 0 0 4px rgba(200,16,46,.13)}
+  .choice:has(input:checked) .e{transform:scale(1.25) rotate(-8deg)}
+  .choice:has(input:focus-visible){outline:3px solid var(--gold);outline-offset:2px}
+
+  .counts{display:grid;grid-template-columns:1fr 1fr;gap:14px;overflow:hidden;transition:max-height .45s ease,opacity .35s,margin .35s;max-height:240px}
+  .counts.hide{max-height:0;opacity:0;margin-top:0}
+  .stepper{display:flex;align-items:center;justify-content:space-between;background:#fff;border:2px solid #e8d9c5;border-radius:16px;padding:8px}
+  .stepper button{width:42px;height:42px;border-radius:12px;border:0;font-size:1.4rem;font-weight:900;cursor:pointer;color:#fff;background:var(--red);
+    box-shadow:0 3px 0 #7d0a1c;transition:transform .1s}
+  .stepper button.plus{background:#1f9d55;box-shadow:0 3px 0 #0f5e31}
+  .stepper button:active{transform:translateY(2px);box-shadow:none}
+  .stepper button:disabled{opacity:.35;cursor:not-allowed}
+  .stepper output{font-size:1.7rem;font-weight:900;min-width:40px;text-align:center}
+  .stepper output.bump{animation:bump .25s}
+  @keyframes bump{50%{transform:scale(1.35);color:var(--red)}}
+
+  .names{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  input[type=text]{width:100%;font:inherit;font-weight:700;font-size:1rem;padding:14px 14px;border-radius:14px;border:2px solid #e8d9c5;background:#fff;
+    color:var(--ink);transition:border-color .2s,box-shadow .2s}
+  input[type=text]::placeholder{color:#bba996;font-weight:600}
+  input[type=text]:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,193,78,.25)}
+  input.err{border-color:var(--red);animation:shake .35s}
+  @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+  .send{margin-top:26px;width:100%;border:0;cursor:pointer;font:inherit;font-weight:900;font-size:1.15rem;color:#fff;padding:16px;border-radius:16px;
+    background:linear-gradient(135deg,var(--red2),var(--red));box-shadow:0 6px 0 #7d0a1c,0 14px 26px rgba(200,16,46,.35);position:relative;overflow:hidden;
+    transition:transform .12s}
+  .send::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);
+    transform:skewX(-20deg);animation:shine 2.8s ease-in-out infinite}
+  @keyframes shine{0%,60%{left:-60%}100%{left:130%}}
+  .send:active{transform:translateY(4px);box-shadow:0 2px 0 #7d0a1c}
+  .send:disabled{opacity:.7;cursor:wait}
+  .msg{margin-top:12px;text-align:center;font-weight:700;color:var(--red);min-height:1.2em}
+
+  /* Éxito */
+  .done{display:none;text-align:center;padding:10px 4px}
+  .done .big{font-size:4.2rem;animation:pop .7s cubic-bezier(.2,1.6,.4,1) both}
+  .done h2{font-family:'Mountains of Christmas',cursive;font-size:2.4rem;color:var(--red);margin:6px 0 8px}
+  .done p{font-size:1.05rem;color:#4a3a2e}
+  .done .sum{display:inline-flex;gap:10px;margin:16px 0 4px;flex-wrap:wrap;justify-content:center}
+  .done .sum span{background:#fff;border:2px solid #e8d9c5;border-radius:999px;padding:6px 14px;font-weight:800}
+  .link{margin-top:18px;background:none;border:0;font:inherit;font-weight:800;color:#1f7a47;text-decoration:underline;cursor:pointer}
+
+  footer{text-align:center;color:rgba(255,255,255,.65);font-size:.85rem;margin-top:22px}
+
+  @media (max-width:440px){
+    .card{padding:58px 16px 22px}
+    .names{grid-template-columns:1fr}
+    .stepper button{width:38px;height:38px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div class="lights" id="lights"></div>
+
+<main class="wrap">
+  <header>
+    <span class="kicker">✨ Estás invitado ✨</span>
+    <h1>Convivio <span class="gold">Familiar</span></h1>
+    <p class="date">Matutino · <b>Domingo 29 de noviembre 2026</b></p>
+    <div class="countdown" id="countdown" hidden></div>
+  </header>
+
+  <section class="card">
+    <div class="bow" aria-hidden="true">🎀</div>
+    <span class="ornament o1" aria-hidden="true"></span>
+    <span class="ornament o2" aria-hidden="true"></span>
+
+    <form id="form" novalidate>
+      <div class="q">
+        <span class="label">Para el convivio del 29 de noviembre</span>
+        <div class="choices" role="radiogroup">
+          <label class="choice yes"><input type="radio" name="asiste" value="si" checked><span class="e">🎉</span>Puedo asistir</label>
+          <label class="choice no"><input type="radio" name="asiste" value="no"><span class="e">😢</span>No puedo asistir</label>
+        </div>
+      </div>
+
+      <div class="q counts" id="counts">
+        <div>
+          <span class="label">Adultos</span>
+          <div class="stepper" data-name="adultos" data-min="1" data-max="20">
+            <button type="button" class="minus" aria-label="Menos adultos">−</button>
+            <output>1</output>
+            <button type="button" class="plus" aria-label="Más adultos">+</button>
+          </div>
+        </div>
+        <div>
+          <span class="label">Niños</span>
+          <div class="stepper" data-name="ninos" data-min="0" data-max="20">
+            <button type="button" class="minus" aria-label="Menos niños">−</button>
+            <output>0</output>
+            <button type="button" class="plus" aria-label="Más niños">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="q">
+        <span class="label">Familia <small>· quien confirma</small></span>
+        <div class="names">
+          <input type="text" id="nombre" placeholder="Nombre" autocomplete="given-name" maxlength="60">
+          <input type="text" id="apellidos" placeholder="Apellidos" autocomplete="family-name" maxlength="80">
+        </div>
+      </div>
+
+      <button class="send" id="send" type="submit">Enviar mi respuesta 🎁</button>
+      <p class="msg" id="msg" role="alert"></p>
+    </form>
+
+    <div class="done" id="done">
+      <div class="big" id="doneIcon">🎄</div>
+      <h2 id="doneTitle">¡Gracias!</h2>
+      <p id="doneText"></p>
+      <div class="sum" id="doneSum"></div>
+      <div><button class="link" id="again" type="button">Cambiar mi respuesta</button></div>
+    </div>
+  </section>
+
+  <footer>🎅 ¡Feliz Navidad! · Con cariño, la organización del convivio</footer>
+</main>
+
+<script>
+/* ---------- Luces ---------- */
+(() => {
+  const l = document.getElementById('lights');
+  const n = Math.max(10, Math.round(innerWidth / 48));
+  for (let i = 0; i < n; i++) l.appendChild(Object.assign(document.createElement('span'), { className: 'bulb' }));
+})();
+
+/* ---------- Cuenta regresiva ---------- */
+(() => {
+  const el = document.getElementById('countdown');
+  const fmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Guatemala' });
+  const today = new Date(fmt.format(new Date()) + 'T00:00:00');
+  const ev = new Date('2026-11-29T00:00:00');
+  const d = Math.round((ev - today) / 864e5);
+  if (d > 1) el.textContent = `⏳ ¡Faltan ${d} días!`;
+  else if (d === 1) el.textContent = '⏳ ¡Es mañana!';
+  else if (d === 0) el.textContent = '🎉 ¡Es hoy!';
+  else return;
+  el.hidden = false;
+})();
+
+/* ---------- Nieve + confeti ---------- */
+const fx = (() => {
+  const c = document.getElementById('fx'), x = c.getContext('2d');
+  let W, H, flakes = [], confetti = [];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const size = () => { W = c.width = innerWidth * devicePixelRatio; H = c.height = innerHeight * devicePixelRatio; };
+  size(); addEventListener('resize', size);
+  const N = reduce ? 0 : Math.min(140, Math.round(innerWidth / 6));
+  for (let i = 0; i < N; i++) flakes.push({ x: Math.random() * W, y: Math.random() * H, r: (Math.random() * 2.4 + .8) * devicePixelRatio, s: Math.random() * .8 + .35, w: Math.random() * 6.28 });
+  const colors = ['#c8102e', '#f2c14e', '#1f9d55', '#ffffff', '#4ab3ff'];
+  function burst() {
+    if (reduce) return;
+    const dpr = devicePixelRatio;
+    for (let i = 0; i < 180; i++) {
+      confetti.push({ x: W / 2, y: H * .45, vx: (Math.random() - .5) * 22 * dpr, vy: (Math.random() * -18 - 6) * dpr,
+        w: (Math.random() * 8 + 5) * dpr, h: (Math.random() * 5 + 3) * dpr, c: colors[i % colors.length], a: Math.random() * 6.28, va: (Math.random() - .5) * .4, life: 1 });
+    }
+  }
+  (function loop() {
+    x.clearRect(0, 0, W, H);
+    x.fillStyle = 'rgba(255,255,255,.85)';
+    for (const f of flakes) {
+      f.y += f.s * devicePixelRatio; f.w += .01; f.x += Math.sin(f.w) * .5;
+      if (f.y > H) { f.y = -5; f.x = Math.random() * W; }
+      x.beginPath(); x.arc(f.x, f.y, f.r, 0, 6.28); x.fill();
+    }
+    confetti = confetti.filter(p => p.life > 0 && p.y < H + 40);
+    for (const p of confetti) {
+      p.vy += .45 * devicePixelRatio; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.a += p.va; p.life -= .006;
+      x.save(); x.translate(p.x, p.y); x.rotate(p.a); x.globalAlpha = Math.max(p.life, 0);
+      x.fillStyle = p.c; x.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); x.restore();
+    }
+    requestAnimationFrame(loop);
+  })();
+  return { burst };
+})();
+
+/* ---------- Formulario ---------- */
+const form = document.getElementById('form');
+const counts = document.getElementById('counts');
+const values = { adultos: 1, ninos: 0 };
+
+document.querySelectorAll('.stepper').forEach(st => {
+  const name = st.dataset.name, min = +st.dataset.min, max = +st.dataset.max;
+  const out = st.querySelector('output'), minus = st.querySelector('.minus'), plus = st.querySelector('.plus');
+  const render = () => {
+    out.textContent = values[name]; minus.disabled = values[name] <= min; plus.disabled = values[name] >= max;
+    out.classList.remove('bump'); void out.offsetWidth; out.classList.add('bump');
+  };
+  minus.onclick = () => { values[name] = Math.max(min, values[name] - 1); render(); };
+  plus.onclick = () => { values[name] = Math.min(max, values[name] + 1); render(); };
+  render();
+});
+
+const asiste = () => form.asiste.value === 'si';
+form.querySelectorAll('input[name=asiste]').forEach(r => r.addEventListener('change', () => counts.classList.toggle('hide', !asiste())));
+
+const msg = document.getElementById('msg');
+const send = document.getElementById('send');
+const $n = document.getElementById('nombre'), $a = document.getElementById('apellidos');
+[$n, $a].forEach(i => i.addEventListener('input', () => i.classList.remove('err')));
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  msg.textContent = '';
+  const nombre = $n.value.trim(), apellidos = $a.value.trim();
+  let bad = false;
+  if (!nombre) { $n.classList.add('err'); bad = true; }
+  if (!apellidos) { $a.classList.add('err'); bad = true; }
+  if (bad) { msg.textContent = 'Escribe el nombre y apellidos de tu familia 🙏'; return; }
+
+  const data = { asiste: asiste(), adultos: values.adultos, ninos: values.ninos, nombre, apellidos };
+  send.disabled = true; send.textContent = 'Enviando… ❄️';
+  try {
+    const r = await fetch('/api/responder', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'Error');
+    showDone(data, j.actualizado);
+  } catch (err) {
+    msg.textContent = '😕 ' + (err.message || 'No se pudo enviar') + '. Intenta de nuevo.';
+  } finally {
+    send.disabled = false; send.textContent = 'Enviar mi respuesta 🎁';
+  }
+});
+
+function showDone(d, updated) {
+  form.style.display = 'none';
+  const done = document.getElementById('done');
+  done.style.display = 'block';
+  const fam = `${d.nombre} ${d.apellidos}`;
+  if (d.asiste) {
+    document.getElementById('doneIcon').textContent = '🎄';
+    document.getElementById('doneTitle').textContent = updated ? '¡Respuesta actualizada!' : '¡Los esperamos!';
+    document.getElementById('doneText').textContent = `Gracias, ${fam}. Nos vemos el domingo 29 de noviembre por la mañana.`;
+    document.getElementById('doneSum').innerHTML = `<span>👨‍👩 ${d.adultos} adulto${d.adultos > 1 ? 's' : ''}</span><span>🧒 ${d.ninos} niño${d.ninos === 1 ? '' : 's'}</span>`;
+    fx.burst();
+  } else {
+    document.getElementById('doneIcon').textContent = '💌';
+    document.getElementById('doneTitle').textContent = '¡Los vamos a extrañar!';
+    document.getElementById('doneText').textContent = `Gracias por avisarnos, ${fam}. ¡Les deseamos una muy feliz Navidad!`;
+    document.getElementById('doneSum').innerHTML = '';
+  }
+  done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.getElementById('again').onclick = () => {
+  document.getElementById('done').style.display = 'none';
+  form.style.display = 'block';
+};
+</script>
+</body>
+</html>
