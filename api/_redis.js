@@ -1,7 +1,16 @@
 // Conexión a Upstash Redis (vía REST, sin dependencias).
 // Vercel crea estas variables solas al conectar Upstash desde Storage / Marketplace.
-const DB_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const DB_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+// Acepta nombres con prefijo personalizado (p. ej. STORAGE_KV_REST_API_URL).
+const envEnding = (...ends) => {
+  for (const end of ends) {
+    if (process.env[end]) return process.env[end];
+    const k = Object.keys(process.env).find(n => n.endsWith('_' + end) && !n.includes('READ_ONLY'));
+    if (k && process.env[k]) return process.env[k];
+  }
+  return '';
+};
+const DB_URL = envEnding('KV_REST_API_URL', 'UPSTASH_REDIS_REST_URL', 'REDIS_REST_URL');
+const DB_TOKEN = envEnding('KV_REST_API_TOKEN', 'UPSTASH_REDIS_REST_TOKEN', 'REDIS_REST_TOKEN');
 
 export const KEY = 'convivio-29nov2026:respuestas';
 
