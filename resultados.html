@@ -135,6 +135,15 @@
       </table>
     </div>
   </div>
+  <div class="panel" style="margin-top:20px">
+    <h2 style="font-family:'Mountains of Christmas',cursive;color:var(--red);font-size:2rem;margin-bottom:10px">💌 Buenos deseos publicados <span id="wN" style="font-family:Nunito;font-size:1rem;color:var(--muted)"></span></h2>
+    <div class="tbl-wrap">
+      <table style="min-width:520px">
+        <thead><tr><th>De</th><th>Mensaje</th><th>Fecha</th><th></th></tr></thead>
+        <tbody id="wRows"></tbody>
+      </table>
+    </div>
+  </div>
   <p class="note">Se actualiza solo cada 20 segundos. Si una familia vuelve a enviar con el mismo nombre, se actualiza su respuesta.</p>
 </main>
 
@@ -164,6 +173,7 @@ async function load(fromLogin) {
     lastLoad = Date.now();
     $('login').hidden = true; $('app').hidden = false;
     render();
+    loadWishes();
   } catch (e) {
     if (fromLogin) $('loginErr').textContent = e.message;
     else $('updated').textContent = '⚠ ' + e.message;
@@ -221,6 +231,31 @@ $('rows').addEventListener('click', async e => {
   b.textContent = '…';
   await fetch('/api/resultados?id=' + encodeURIComponent(b.dataset.id), { method: 'DELETE', headers: { 'x-pin': PIN } });
   load();
+});
+
+async function loadWishes() {
+  try {
+    const j = await (await fetch('/api/deseos', { cache: 'no-store' })).json();
+    const list = j.deseos || [];
+    $('wN').textContent = `(${list.length})`;
+    $('wRows').innerHTML = list.length ? list.map(d => `<tr>
+      <td class="fam">${esc(d.icono)} ${esc(d.nombre)}</td>
+      <td style="max-width:420px">${esc(d.mensaje)}</td>
+      <td class="when">${dt.format(new Date(d.fecha))}</td>
+      <td><button class="del wdel" data-id="${esc(d.id)}" title="Eliminar deseo">🗑</button></td></tr>`).join('')
+      : '<tr><td colspan="4" class="empty">Aún no hay deseos publicados.</td></tr>';
+  } catch {}
+}
+$('wRows').addEventListener('click', async e => {
+  const b = e.target.closest('.wdel'); if (!b) return;
+  if (!b.classList.contains('confirm')) {
+    b.classList.add('confirm'); b.textContent = '¿Borrar?';
+    setTimeout(() => { if (b.isConnected) { b.classList.remove('confirm'); b.textContent = '🗑'; } }, 3500);
+    return;
+  }
+  b.textContent = '…';
+  await fetch('/api/deseos?id=' + encodeURIComponent(b.dataset.id), { method: 'DELETE', headers: { 'x-pin': PIN } });
+  loadWishes();
 });
 
 $('seg').addEventListener('click', e => {
