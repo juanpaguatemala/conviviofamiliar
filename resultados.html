@@ -305,7 +305,8 @@ async function loadAmigo() {
     $('aRows').innerHTML = ps.length ? ps.map(p => `<tr>
       <td>${esc(p.familia)}</td><td class="fam">${esc(p.nombre)}</td><td>${p.tipo === 'nino' ? '🧒 Niño' : '🧑 Adulto'}</td>
       <td style="font-size:.82rem;max-width:340px">${p.gustos.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${p.gustos.map(g => `<span class="tag" style="background:#fbf3e7;color:var(--ink)">${GUSTO_NOMBRE[g] || esc(g)}</span>`).join('')}</div>` : '<span style="color:var(--muted)">Sin gustos</span>'}
-        ${p.deseo ? `<div style="margin-top:4px;font-weight:700">💭 ${esc(p.deseo)}</div>` : ''}</td>
+        ${p.deseo ? `<div style="margin-top:4px;font-weight:700">💭 ${esc(p.deseo)}</div>` : ''}
+        ${p.pedido || p.pedidoLink ? `<div style="margin-top:4px;font-weight:700;background:#fff3c4;border-radius:8px;padding:4px 8px">🎯 ${esc(p.pedido || 'Producto específico')}${p.pedidoLink && /^https?:\/\//i.test(p.pedidoLink) ? ` · <a href="${esc(p.pedidoLink)}" target="_blank" rel="noopener nofollow">ver link ↗</a>` : ''}</div>` : ''}</td>
       <td>${p.revelado ? '<span class="tag si">✔ Sí</span>' : '—'}</td>
       <td style="white-space:nowrap"><button class="btn alt apin" data-id="${esc(p.id)}" style="padding:5px 10px;font-size:.8rem">Nuevo PIN</button>
         ${amEstado === 'registro' ? `<button class="del adel" data-id="${esc(p.id)}" title="Eliminar">🗑</button>` : ''}</td></tr>`).join('')

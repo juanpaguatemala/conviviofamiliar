@@ -35,7 +35,7 @@ async function familias() {
 const estadoActual = async () => (await redis('GET', EK)) || 'registro';
 const limpio = (p, fams) => {
   const f = fams && fams.find(x => x.id === p.familiaId);
-  return { id: p.id, nombre: p.nombre, tipo: p.tipo, gustos: p.gustos || [], deseo: p.deseo || '', familiaId: p.familiaId,
+  return { id: p.id, nombre: p.nombre, tipo: p.tipo, gustos: p.gustos || [], deseo: p.deseo || '', pedido: p.pedido || '', pedidoLink: p.pedidoLink || '', familiaId: p.familiaId,
     familia: f ? `Familia ${f.apellidos}` : '' };
 };
 
@@ -80,6 +80,12 @@ async function autenticar(id, pin) {
   return { p };
 }
 
+function limpiarLink(v) {
+  const t = String(v || '').trim().slice(0, 400);
+  if (!t) return '';
+  try { const u = new URL(/^https?:\/\//i.test(t) ? t : 'https://' + t); return /^https?:$/.test(u.protocol) && u.hostname.includes('.') ? u.href : ''; }
+  catch { return ''; }
+}
 function validarGustos(tipo, gustos) {
   return Array.isArray(gustos) ? [...new Set(gustos.filter(g => GUSTOS[tipo].includes(g)))] : [];
 }
@@ -121,7 +127,8 @@ export default async function handler(req, res) {
         return res.status(409).json({ error: `${nombre} ya está inscrito en la Familia ${fam.apellidos}` });
       const id = Date.now().toString(36) + randomInt(1e6).toString(36);
       const p = { id, familiaId: fam.id, nombre, tipo, gustos: validarGustos(tipo, b.gustos),
-        deseo: String(b.deseo || '').trim().slice(0, 140), pinHash: hashPin(id, pin), creado: new Date().toISOString(), revelado: null };
+        deseo: String(b.deseo || '').trim().slice(0, 140), pedido: String(b.pedido || '').trim().slice(0, 240), pedidoLink: limpiarLink(b.pedidoLink),
+        pinHash: hashPin(id, pin), creado: new Date().toISOString(), revelado: null };
       await redis('HSET', PK, id, JSON.stringify(p));
       return res.status(200).json({ ok: true, participante: limpio(p, fams) });
     }
@@ -136,6 +143,8 @@ export default async function handler(req, res) {
       if (accion === 'actualizar') {
         p.gustos = validarGustos(p.tipo, b.gustos);
         p.deseo = String(b.deseo || '').trim().slice(0, 140);
+        p.pedido = String(b.pedido || '').trim().slice(0, 240);
+        p.pedidoLink = limpiarLink(b.pedidoLink);
         await redis('HSET', PK, p.id, JSON.stringify(p));
       }
       if (accion === 'revelar') {

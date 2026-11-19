@@ -202,6 +202,24 @@
   .stores{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
   .stores a{text-decoration:none;font-weight:900;font-size:.82rem;padding:7px 12px;border-radius:10px;background:var(--pine2);color:#fff}
   .stores a:hover{background:var(--red)}
+  .pedido{margin:14px auto 0;max-width:480px;text-align:left;background:linear-gradient(135deg,#fff3c4,#ffe8eb);border:2px solid var(--gold);border-radius:16px;padding:12px 14px}
+  .pedido b{display:block;font-size:.85rem;color:var(--red);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .pedido p{font-weight:800;white-space:pre-wrap;word-wrap:break-word}
+  .pedido a{display:inline-block;margin-top:8px;text-decoration:none;font-weight:900;font-size:.88rem;padding:8px 14px;border-radius:10px;background:var(--red);color:#fff;word-break:break-all}
+  .box textarea{width:100%;font:inherit;font-weight:700;font-size:1rem;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:#fffdf9;color:var(--ink);resize:vertical;min-height:70px}
+  .box textarea:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,193,78,.25)}
+  .esp{background:#fffaf0;border:2px dashed var(--gold);border-radius:14px;padding:12px;display:grid;gap:8px}
+  .prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:10px}
+  .prod{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);background:#fffdf9;border:2px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .15s,box-shadow .15s}
+  .prod:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.12)}
+  .prod img{width:100%;aspect-ratio:1;object-fit:contain;background:#fff;padding:6px}
+  .prod .pi{padding:8px 10px 10px;display:flex;flex-direction:column;gap:4px;flex:1}
+  .prod .pn{font-size:.8rem;font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .prod .pp{font-weight:900;color:var(--red);font-size:1.05rem;margin-top:auto}
+  .prod .pt{font-size:.72rem;font-weight:900;color:#fff;background:var(--pine2);border-radius:999px;padding:2px 8px;align-self:flex-start}
+  .prods .loading,.prods .nada{grid-column:1/-1;text-align:center;color:var(--muted);font-weight:700;font-size:.9rem;padding:10px}
+  .more{margin-top:12px;border-top:2px dashed var(--line);padding-top:10px}
+  .more summary{cursor:pointer;font-weight:800;font-size:.88rem;color:var(--muted)}
   .small-note{font-size:.8rem;color:var(--muted);font-weight:700;text-align:center;margin-top:10px}
   .linkbtn{background:none;border:0;font:inherit;font-weight:800;color:#1f7a47;text-decoration:underline;cursor:pointer}
 
@@ -325,6 +343,12 @@
         </div>
         <div><span class="lb2">¿Qué le gusta? <small class="hint">(elige varios)</small></span><div class="chips" id="rGustos"></div></div>
         <div><label class="lb2" for="rDeseo">Algo puntual que le gustaría <small class="hint">(opcional)</small></label><input type="text" id="rDeseo" maxlength="140" placeholder="Ej. chocolates con almendra, color favorito azul…"></div>
+        <div class="esp">
+          <span class="lb2" style="margin:0">🎯 ¿Quieres algo específico? <small class="hint">(opcional)</small></span>
+          <textarea id="rPedido" maxlength="240" placeholder="Ej. Taza de Harry Potter de Miniso, o crayones Crayola de 24 en Walmart"></textarea>
+          <input type="text" id="rPedidoLink" maxlength="400" placeholder="Link del producto (opcional) https://…" inputmode="url">
+          <p class="hint">Recuerda que el regalo es de Q25 🙂</p>
+        </div>
         <div><label class="lb2" for="rPin">Crea un PIN de 4 números</label><input inputmode="numeric" id="rPin" class="pin" maxlength="4" placeholder="••••" autocomplete="off">
           <p class="hint" style="margin-top:6px">🔐 Lo necesitarás para girar la tómbola y ver a tu amigo secreto. Los papás pueden inscribir a sus niños.</p></div>
         <button class="send" id="rSend" type="submit">Inscribirme en la tómbola 🎁</button>
@@ -348,6 +372,11 @@
           <div class="row"><strong id="yoNombre"></strong><button type="button" class="linkbtn" id="salir">Salir</button></div>
           <div><span class="lb2">Mi wish list · lo que me gusta</span><div class="chips" id="yoGustos"></div></div>
           <div><label class="lb2" for="yoDeseo">Algo puntual</label><input type="text" id="yoDeseo" maxlength="140"></div>
+          <div class="esp">
+            <span class="lb2" style="margin:0">🎯 Producto específico <small class="hint">(opcional)</small></span>
+            <textarea id="yoPedido" maxlength="240" placeholder="Qué producto y dónde comprarlo"></textarea>
+            <input type="text" id="yoPedidoLink" maxlength="400" placeholder="Link del producto (opcional) https://…" inputmode="url">
+          </div>
           <button class="send" id="yoSave" type="button" style="background:linear-gradient(135deg,#2bb36a,#1f9d55);box-shadow:0 5px 0 #0f5e31">Guardar mi wish list</button>
           <p class="okmsg" id="yoOk"></p>
         </div>
@@ -362,8 +391,9 @@
             <div class="who" id="rvNombre"></div>
             <div class="fam2" id="rvFam"></div>
             <div class="wish2" id="rvDeseo" hidden></div>
+            <div class="pedido" id="rvPedido" hidden><b>🎯 Pidió algo específico</b><p id="rvPedidoTxt"></p><a id="rvPedidoLink" target="_blank" rel="noopener nofollow" hidden>🛒 Ver el producto ↗</a></div>
             <div class="ideas" id="rvIdeas"></div>
-            <p class="small-note">Ideas de aprox. Q25 · los precios cambian, confírmalo en la tienda.</p>
+            <p class="small-note">Productos de Q15 a Q30 encontrados en las tiendas · los precios y existencias pueden cambiar, confírmalo antes de comprar.</p>
           </div>
         </div>
       </div>
@@ -596,7 +626,7 @@ const post = async (accion, data) => {
 
 $('regForm').addEventListener('submit', async e => {
   e.preventDefault(); $('rErr').textContent = ''; $('rOk').textContent = '';
-  const data = { familiaId: $('rFam').value, nombre: $('rNombre').value.trim(), tipo: rTipo, gustos: [...rGustos], deseo: $('rDeseo').value.trim(), pin: $('rPin').value };
+  const data = { familiaId: $('rFam').value, nombre: $('rNombre').value.trim(), tipo: rTipo, gustos: [...rGustos], deseo: $('rDeseo').value.trim(), pedido: $('rPedido').value.trim(), pedidoLink: $('rPedidoLink').value.trim(), pin: $('rPin').value };
   if (!data.familiaId) return $('rErr').textContent = 'Elige tu familia';
   if (data.nombre.length < 2) return $('rErr').textContent = 'Escribe el nombre';
   if (!/^\d{4}$/.test(data.pin)) return $('rErr').textContent = 'El PIN debe tener 4 números';
@@ -604,7 +634,7 @@ $('regForm').addEventListener('submit', async e => {
   try {
     const j = await post('registrar', data);
     $('rOk').textContent = `🎉 ¡${j.participante.nombre} ya está en la tómbola! Guarda tu PIN.`;
-    $('rNombre').value = ''; $('rDeseo').value = ''; $('rPin').value = ''; rGustos.clear(); renderRegChips();
+    $('rNombre').value = ''; $('rDeseo').value = ''; $('rPedido').value = ''; $('rPedidoLink').value = ''; $('rPin').value = ''; rGustos.clear(); renderRegChips();
     fx.burst(90); loadAmigo();
   } catch (err) { $('rErr').textContent = '😕 ' + err.message; }
   finally { $('rSend').disabled = false; }
@@ -624,7 +654,7 @@ $('logForm').addEventListener('submit', async e => {
 function showMio() {
   $('logForm').hidden = true; $('mio').hidden = false;
   $('yoNombre').textContent = `${yo.tipo === 'nino' ? '🧒' : '🧑'} ${yo.nombre} · ${yo.familia}`;
-  yoGustos = new Set(yo.gustos); $('yoGustos').innerHTML = chipsHTML(yo.tipo, yoGustos); $('yoDeseo').value = yo.deseo;
+  yoGustos = new Set(yo.gustos); $('yoGustos').innerHTML = chipsHTML(yo.tipo, yoGustos); $('yoDeseo').value = yo.deseo; $('yoPedido').value = yo.pedido || ''; $('yoPedidoLink').value = yo.pedidoLink || '';
   $('reveal').classList.remove('on'); $('drum').classList.remove('spin');
   const on = AM.estado === 'sorteo';
   $('tombola').style.display = on ? '' : 'none';
@@ -639,8 +669,9 @@ $('yoGustos').addEventListener('click', toggleChip(yoGustos));
 $('salir').onclick = () => { yo = null; yoPin = ''; $('lPin').value = ''; $('mio').hidden = true; $('logForm').hidden = false; };
 $('yoSave').onclick = async () => {
   $('yoOk').textContent = '';
-  try { await post('actualizar', { id: yo.id, pin: yoPin, gustos: [...yoGustos], deseo: $('yoDeseo').value.trim() });
-    yo.gustos = [...yoGustos]; yo.deseo = $('yoDeseo').value.trim(); $('yoOk').textContent = '✅ Wish list guardada';
+  try { await post('actualizar', { id: yo.id, pin: yoPin, gustos: [...yoGustos], deseo: $('yoDeseo').value.trim(), pedido: $('yoPedido').value.trim(), pedidoLink: $('yoPedidoLink').value.trim() });
+    const j = await post('perfil', { id: yo.id, pin: yoPin }); yo = j.yo; $('yoPedidoLink').value = yo.pedidoLink || '';
+    $('yoOk').textContent = '✅ Wish list guardada';
   } catch (err) { $('yoOk').textContent = '😕 ' + err.message; }
 };
 
@@ -669,15 +700,33 @@ function showReveal(a) {
   $('rvNombre').textContent = a.nombre;
   $('rvFam').textContent = `${a.tipo === 'nino' ? '🧒 Niño' : '🧑 Adulto'} · ${a.familia}`;
   $('rvDeseo').hidden = !a.deseo; $('rvDeseo').textContent = a.deseo ? `💭 "${a.deseo}"` : '';
+  $('rvPedido').hidden = !(a.pedido || a.pedidoLink);
+  $('rvPedidoTxt').textContent = a.pedido || 'Dejó este producto:';
+  $('rvPedidoLink').hidden = !a.pedidoLink;
+  if (a.pedidoLink && /^https?:\/\//i.test(a.pedidoLink)) $('rvPedidoLink').href = a.pedidoLink;
   const cats = CATS[a.tipo];
   let keys = (a.gustos || []).filter(k => cats[k]);
   if (!keys.length) keys = a.tipo === 'nino' ? Object.keys(cats) : ['dulces', 'hogar', 'accesorios', 'variado'];
   $('rvIdeas').innerHTML = `<p class="hint" style="text-align:center">${a.tipo === 'nino' ? '🧸 Es niño: solo juguetes' : (a.gustos || []).length ? '✨ Según su wish list' : '✨ No llenó su wish list, aquí van ideas generales'}</p>` +
     keys.map(k => { const c = cats[k];
       return `<div class="idea" data-k="${k}"><h5>${c.e} ${c.n}</h5>
-        <div class="chips">${c.i.map((idea, n) => `<button type="button" data-idea="${esc(idea)}" class="${n === 0 ? 'on' : ''}">${esc(idea)}</button>`).join('')}</div>
-        <div class="stores">${storeLinks(c, c.i[0])}</div></div>`; }).join('');
+        <div class="prods" id="prods-${k}"><div class="loading">🔎 Buscando productos de ~Q25 en las tiendas…</div></div>
+        <details class="more"><summary>💡 Más ideas y otras tiendas</summary>
+          <div class="chips" style="margin-top:8px">${c.i.map((idea, n) => `<button type="button" data-idea="${esc(idea)}" class="${n === 0 ? 'on' : ''}">${esc(idea)}</button>`).join('')}</div>
+          <div class="stores">${storeLinks(c, c.i[0])}</div></details></div>`; }).join('');
   $('reveal').classList.add('on');
+  keys.forEach(k => cargarProductos(a.tipo, k));
+}
+async function cargarProductos(tipo, k) {
+  const box = $('prods-' + k); if (!box) return;
+  try {
+    const j = await (await fetch(`/api/regalos?tipo=${tipo}&cat=${k}`)).json();
+    const ps = j.productos || [];
+    box.innerHTML = ps.length ? ps.map(p => `<a class="prod" href="${esc(p.link)}" target="_blank" rel="noopener">
+        <img loading="lazy" src="${esc(p.img)}" alt="" onerror="this.style.visibility='hidden'">
+        <div class="pi"><span class="pt">${esc(p.tienda)}</span><span class="pn">${esc(p.nombre)}</span><span class="pp">Q${p.precio.toFixed(2)}</span></div></a>`).join('')
+      : '<div class="nada">No encontramos productos en este momento. Abre "Más ideas y otras tiendas" 👇</div>';
+  } catch { box.innerHTML = '<div class="nada">No se pudo buscar ahora. Abre "Más ideas y otras tiendas" 👇</div>'; }
 }
 const storeLinks = (c, idea) => c.t.map(t => `<a href="${buscar(idea, t)}" target="_blank" rel="noopener">🔎 ${TIENDAS[t][0]}</a>`).join('');
 $('rvIdeas').addEventListener('click', e => {
