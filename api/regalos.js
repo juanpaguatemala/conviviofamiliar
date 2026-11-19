@@ -15,10 +15,12 @@ const TIENDAS = {
 
 const JUGUETE = /\/juguet|jugueter|didáctic|didactic/i;            // niños: SOLO categorías de juguetes
 const NO_ADULTO = /beb[eé]|ni[ñn]o|ni[ñn]a|infantil|\/juguet/i;     // adultos: nada de bebé/niños/juguetes
+const MASCOTA = /mascota|perro|gato/i;                             // nunca artículos para mascotas
+const NO_COMIDA = /hogar|cocina|utensil|reposter|electro/i;          // en dulces/snacks: solo comida
 const BUSQUEDAS = {
   adulto: {
-    dulces:     { q: ['chocolate', 'bombones', 'turron', 'galletas navidad'], c: /dulce|chocolate|confit|galleta|navid|golosin/i, t: ['walmart', 'paiz', 'latorre'] },
-    snacks:     { q: ['cafe molido', 'chocolate caliente', 'galletas', 'te'], c: /abarrot|caf|snack|galleta|bebida|desayuno|boquita|infusi|té/i, t: ['walmart', 'paiz', 'latorre'] },
+    dulces:     { q: ['chocolate', 'bombones', 'turron', 'galletas navidad'], c: /dulce|chocolate|confit|galleta|navid|golosin/i, x: NO_COMIDA, t: ['walmart', 'paiz', 'latorre'] },
+    snacks:     { q: ['cafe molido', 'chocolate caliente', 'galletas', 'te'], c: /abarrot|caf|snack|galleta|bebida|desayuno|boquita|infusi|té/i, x: NO_COMIDA, t: ['walmart', 'paiz', 'latorre'] },
     hogar:      { q: ['taza', 'vela aromatica', 'portavasos', 'toalla de cocina'], c: /hogar|cocina|mesa|decor|baño|vela|aroma|vajill/i, t: ['cemaco', 'walmart', 'siman', 'latorre'] },
     papeleria:  { q: ['libreta', 'lapiceros', 'cuaderno', 'agenda'], c: /papel|escolar|oficina|librer|cuaderno|escritura|útiles|utiles/i, t: ['walmart', 'cemaco', 'paiz'] },
     libros:     { q: ['libro', 'libro para colorear'], c: /libro|librer|lectura/i, t: ['walmart', 'cemaco', 'siman'] },
@@ -52,12 +54,15 @@ async function buscarEn(tienda, q) {
   } catch { return []; } finally { clearTimeout(to); }
 }
 
-function normalizar({ p, tienda }, catRe, esNino) {
+function normalizar({ p, tienda }, conf, esNino) {
+  const catRe = conf.c;
   const it = p.items && p.items[0];
   const of = it && it.sellers && it.sellers[0] && it.sellers[0].commertialOffer;
   if (!of || !of.Price || of.IsAvailable === false || of.AvailableQuantity === 0) return null;
   if (of.Price < MIN || of.Price > MAX) return null;
   const cats = (p.categories || []).join(' ');
+  if (MASCOTA.test(cats + ' ' + p.productName)) return null;
+  if (conf.x && conf.x.test(cats)) return null;
   if (esNino) { if (!catRe.test(cats)) return null; }
   else { if (NO_ADULTO.test(cats) || !catRe.test(cats + ' ' + p.productName)) return null; }
   let img = it.images && it.images[0] && it.images[0].imageUrl || '';
@@ -77,12 +82,12 @@ export default async function handler(req, res) {
 export async function buscarProductos(tipo, cat) {
   const conf = BUSQUEDAS[tipo] && BUSQUEDAS[tipo][cat];
   if (!conf) return { productos: [] };
-  const cacheKey = `convivio-29nov2026:regalos:${tipo}:${cat}`;
+  const cacheKey = `convivio-29nov2026:regalos2:${tipo}:${cat}`;
   try { const hit = await redis('GET', cacheKey); if (hit) return JSON.parse(hit); } catch {}
 
   const lotes = await Promise.all(conf.t.flatMap(t => conf.q.map(q => buscarEn(t, q))));
   const vistos = new Set();
-  const productos = lotes.flat().map(x => normalizar(x, conf.c, tipo === 'nino')).filter(Boolean)
+  const productos = lotes.flat().map(x => normalizar(x, conf, tipo === 'nino')).filter(Boolean)
     .filter(x => { const k = x.link; if (vistos.has(k)) return false; vistos.add(k); return true; })
     .sort((a, b) => Math.abs(a.precio - OBJ) - Math.abs(b.precio - OBJ));
 
