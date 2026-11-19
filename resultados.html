@@ -154,7 +154,7 @@
     </div>
     <div class="tbl-wrap">
       <table style="min-width:640px">
-        <thead><tr><th>Familia</th><th>Participante</th><th>Tipo</th><th>Wish list</th><th>¿Ya giró?</th><th></th></tr></thead>
+        <thead><tr><th>Familia</th><th>Participante</th><th>Tipo</th><th>Gustos · wish list</th><th>¿Ya giró?</th><th></th></tr></thead>
         <tbody id="aRows"></tbody>
       </table>
     </div>
@@ -276,6 +276,12 @@ $('wRows').addEventListener('click', async e => {
 });
 
 // ---------- Amigo secreto ----------
+const GUSTO_NOMBRE = {
+  dulces: '🍫 Dulces y chocolates', snacks: '☕ Snacks y café', hogar: '🏠 Hogar y cocina', papeleria: '✏️ Papelería', libros: '📚 Libros',
+  belleza: '💄 Belleza y cuidado', accesorios: '🧦 Accesorios', decoracion: '🎄 Decoración navideña', variado: '🎁 Sorpréndanme',
+  carritos: '🚗 Carritos', munecas: '👸 Muñecas', peluches: '🧸 Peluches', armar: '🧱 Bloques y rompecabezas', juegos: '🎲 Juegos de mesa',
+  deportes: '⚽ Pelotas y aire libre', arte: '🎨 Manualidades y arte', sorpresas: '🦄 Slime y sorpresas',
+};
 let amEstado = 'registro';
 const amPost = async (accion, data = {}) => {
   const r = await fetch('/api/amigo?accion=' + accion, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-pin': PIN }, body: JSON.stringify(data) });
@@ -298,7 +304,8 @@ async function loadAmigo() {
     $('aReabrir').hidden = amEstado !== 'sorteo';
     $('aRows').innerHTML = ps.length ? ps.map(p => `<tr>
       <td>${esc(p.familia)}</td><td class="fam">${esc(p.nombre)}</td><td>${p.tipo === 'nino' ? '🧒 Niño' : '🧑 Adulto'}</td>
-      <td style="font-size:.85rem">${p.gustos.length} gusto${p.gustos.length === 1 ? '' : 's'}${p.deseo ? ' · 💭' : ''}</td>
+      <td style="font-size:.82rem;max-width:340px">${p.gustos.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${p.gustos.map(g => `<span class="tag" style="background:#fbf3e7;color:var(--ink)">${GUSTO_NOMBRE[g] || esc(g)}</span>`).join('')}</div>` : '<span style="color:var(--muted)">Sin gustos</span>'}
+        ${p.deseo ? `<div style="margin-top:4px;font-weight:700">💭 ${esc(p.deseo)}</div>` : ''}</td>
       <td>${p.revelado ? '<span class="tag si">✔ Sí</span>' : '—'}</td>
       <td style="white-space:nowrap"><button class="btn alt apin" data-id="${esc(p.id)}" style="padding:5px 10px;font-size:.8rem">Nuevo PIN</button>
         ${amEstado === 'registro' ? `<button class="del adel" data-id="${esc(p.id)}" title="Eliminar">🗑</button>` : ''}</td></tr>`).join('')
