@@ -146,6 +146,65 @@
   .lb .x{top:16px;right:16px}.lb .p{left:12px}.lb .nx{right:12px}
   .lb .c{position:absolute;bottom:18px;color:#fff;font-weight:800}
 
+  /* Amigo secreto */
+  .budget{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:-6px 0 16px}
+  .budget b{background:var(--green);color:#fff;border-radius:999px;padding:6px 16px;font-size:1.05rem;box-shadow:0 3px 0 #0f5e31}
+  .phase{text-align:center;font-weight:800;border-radius:14px;padding:10px 12px;margin-bottom:14px}
+  .phase.reg{background:#fff7dc;color:#7a5a00;border:2px dashed #f2c14e}
+  .phase.on{background:#e8f8ee;color:#11713b;border:2px dashed #1f9d55}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+  .tabs button{border:2px solid var(--line);background:#fff;font:inherit;font-weight:900;padding:12px 8px;border-radius:14px;cursor:pointer;color:var(--muted)}
+  .tabs button.on{background:var(--pine2);border-color:var(--pine2);color:#fff}
+  .pane{display:none}.pane.on{display:block;animation:rise .4s ease-out both}
+  .box{background:#fff;border:2px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px}
+  .box .lb2{font-weight:900;font-size:.95rem;display:block;margin-bottom:6px}
+  .box select,.box input[type=text],.box input[type=password],.box input[inputmode]{width:100%;font:inherit;font-weight:700;font-size:1rem;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:#fffdf9;color:var(--ink)}
+  .box select:focus,.box input:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,193,78,.25)}
+  .types{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .types button{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 6px;font:inherit;font-weight:900;cursor:pointer}
+  .types button span{display:block;font-size:1.8rem}
+  .types button.on{border-color:var(--red);background:#fff0f2;box-shadow:0 0 0 4px rgba(200,16,46,.12)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font:inherit;font-weight:800;font-size:.9rem;cursor:pointer;transition:transform .12s}
+  .chips button.on{border-color:var(--green);background:#e8f8ee;color:#11713b}
+  .chips button:active{transform:scale(.95)}
+  .hint{font-size:.82rem;color:var(--muted);font-weight:700}
+  .pin{letter-spacing:.4em;text-align:center;font-size:1.3rem!important}
+  .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:16px}
+  .famcard{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px}
+  .famcard h4{font-weight:900;font-size:1rem;display:flex;justify-content:space-between;gap:6px}
+  .famcard h4 small{color:var(--muted);font-weight:800;font-size:.78rem;white-space:nowrap}
+  .famcard ul{list-style:none;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+  .famcard li{background:#fbf3e7;border-radius:999px;padding:4px 10px;font-weight:800;font-size:.85rem}
+  .famcard .none{color:var(--muted);font-weight:700;font-size:.85rem}
+  .okmsg{text-align:center;font-weight:800;color:#11713b;min-height:1.2em}
+
+  .drum-wrap{text-align:center;padding:10px 0 4px}
+  .drum{width:180px;height:180px;margin:0 auto;border-radius:50%;position:relative;
+    background:radial-gradient(circle at 35% 30%,#fff6 0 10%,transparent 30%),conic-gradient(#c8102e 0 12.5%,#f2c14e 0 25%,#1f9d55 0 37.5%,#fff 0 50%,#c8102e 0 62.5%,#f2c14e 0 75%,#1f9d55 0 87.5%,#fff 0);
+    border:8px solid #8a6a2a;box-shadow:0 10px 0 #5e4718,0 18px 30px rgba(0,0,0,.3),inset 0 0 0 4px rgba(0,0,0,.15)}
+  .drum::after{content:"🎁";position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);font-size:2.6rem;background:var(--cream);border-radius:50%;width:70px;height:70px;display:grid;place-items:center;box-shadow:0 0 0 4px #8a6a2a}
+  .drum.spin{animation:spin 3.2s cubic-bezier(.15,.6,.25,1) both}
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(1800deg)}}
+  .stand{width:120px;height:18px;margin:-4px auto 0;background:#8a6a2a;border-radius:0 0 12px 12px}
+  .ticker{margin:16px auto 0;max-width:320px;background:var(--pine);color:var(--gold);font-weight:900;font-size:1.3rem;border-radius:12px;padding:12px;min-height:52px;
+    box-shadow:inset 0 0 0 3px #c8102e;font-variant-numeric:tabular-nums}
+  .spinbtn{margin-top:16px}
+  .reveal{display:none;margin-top:16px;text-align:center}
+  .reveal.on{display:block;animation:pop .7s cubic-bezier(.2,1.6,.4,1) both}
+  .reveal .who{font-family:'Mountains of Christmas',cursive;font-size:2.6rem;color:var(--red);line-height:1}
+  .reveal .fam2{font-weight:800;color:var(--muted)}
+  .reveal .wish2{margin:12px auto 0;max-width:460px;background:#fffdf3;border:2px dashed var(--gold);border-radius:14px;padding:10px 14px;font-weight:700}
+  .ideas{display:grid;gap:12px;margin-top:16px;text-align:left}
+  .idea{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 14px}
+  .idea h5{font-size:1rem;font-weight:900;margin-bottom:8px}
+  .idea .chips button{font-size:.85rem;padding:6px 10px}
+  .stores{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .stores a{text-decoration:none;font-weight:900;font-size:.82rem;padding:7px 12px;border-radius:10px;background:var(--pine2);color:#fff}
+  .stores a:hover{background:var(--red)}
+  .small-note{font-size:.8rem;color:var(--muted);font-weight:700;text-align:center;margin-top:10px}
+  .linkbtn{background:none;border:0;font:inherit;font-weight:800;color:#1f7a47;text-decoration:underline;cursor:pointer}
+
   footer{text-align:center;color:rgba(255,255,255,.65);font-size:.85rem;margin-top:26px}
 
   @media (max-width:640px){
@@ -237,6 +296,78 @@
     </form>
 
     <div class="wall" id="wall"><p class="empty">Cargando deseos… ❄️</p></div>
+  </section>
+
+  <!-- Amigo secreto -->
+  <section class="card" id="amigo">
+    <div class="badge">🎁</div>
+    <h2>Amigo Secreto</h2>
+    <p class="sub">La tómbola navideña de la familia</p>
+    <div class="budget"><b>💰 Regalo de Q25</b><span class="hint">Ni más ni menos 😉</span></div>
+    <div class="phase reg" id="phase">Cargando…</div>
+
+    <div class="tabs">
+      <button type="button" class="on" data-p="inscribir">✍️ Inscribirme</button>
+      <button type="button" data-p="mio">🎡 Mi tómbola</button>
+    </div>
+
+    <!-- Inscripción -->
+    <div class="pane on" id="p-inscribir">
+      <form class="box" id="regForm" novalidate>
+        <div><label class="lb2" for="rFam">Familia</label><select id="rFam"><option value="">Elige tu familia…</option></select></div>
+        <div><label class="lb2" for="rNombre">Nombre de quien participa</label><input type="text" id="rNombre" maxlength="40" placeholder="Ej. Sofía"></div>
+        <div>
+          <span class="lb2">¿Es adulto o niño?</span>
+          <div class="types" id="rTipo">
+            <button type="button" data-t="adulto" class="on"><span>🧑</span>Adulto</button>
+            <button type="button" data-t="nino"><span>🧒</span>Niño</button>
+          </div>
+        </div>
+        <div><span class="lb2">¿Qué le gusta? <small class="hint">(elige varios)</small></span><div class="chips" id="rGustos"></div></div>
+        <div><label class="lb2" for="rDeseo">Algo puntual que le gustaría <small class="hint">(opcional)</small></label><input type="text" id="rDeseo" maxlength="140" placeholder="Ej. chocolates con almendra, color favorito azul…"></div>
+        <div><label class="lb2" for="rPin">Crea un PIN de 4 números</label><input inputmode="numeric" id="rPin" class="pin" maxlength="4" placeholder="••••" autocomplete="off">
+          <p class="hint" style="margin-top:6px">🔐 Lo necesitarás para girar la tómbola y ver a tu amigo secreto. Los papás pueden inscribir a sus niños.</p></div>
+        <button class="send" id="rSend" type="submit">Inscribirme en la tómbola 🎁</button>
+        <p class="msg" id="rErr" role="alert"></p>
+        <p class="okmsg" id="rOk"></p>
+      </form>
+      <div class="board" id="board"></div>
+    </div>
+
+    <!-- Mi tómbola -->
+    <div class="pane" id="p-mio">
+      <form class="box" id="logForm" novalidate>
+        <div><label class="lb2" for="lQuien">¿Quién eres?</label><select id="lQuien"><option value="">Busca tu nombre…</option></select></div>
+        <div><label class="lb2" for="lPin">Tu PIN</label><input inputmode="numeric" id="lPin" class="pin" maxlength="4" placeholder="••••" autocomplete="off"></div>
+        <button class="send" type="submit">Entrar 🎄</button>
+        <p class="msg" id="lErr" role="alert"></p>
+      </form>
+
+      <div id="mio" hidden>
+        <div class="box">
+          <div class="row"><strong id="yoNombre"></strong><button type="button" class="linkbtn" id="salir">Salir</button></div>
+          <div><span class="lb2">Mi wish list · lo que me gusta</span><div class="chips" id="yoGustos"></div></div>
+          <div><label class="lb2" for="yoDeseo">Algo puntual</label><input type="text" id="yoDeseo" maxlength="140"></div>
+          <button class="send" id="yoSave" type="button" style="background:linear-gradient(135deg,#2bb36a,#1f9d55);box-shadow:0 5px 0 #0f5e31">Guardar mi wish list</button>
+          <p class="okmsg" id="yoOk"></p>
+        </div>
+
+        <div class="drum-wrap" id="tombola">
+          <div class="drum" id="drum"></div><div class="stand"></div>
+          <div class="ticker" id="ticker">¿A quién le regalas? 🤔</div>
+          <button class="send spinbtn" id="spin" type="button">🎡 ¡Girar la tómbola!</button>
+          <p class="hint" id="spinHint" style="margin-top:8px"></p>
+          <div class="reveal" id="reveal">
+            <p class="hint">🤫 Tu amigo secreto es…</p>
+            <div class="who" id="rvNombre"></div>
+            <div class="fam2" id="rvFam"></div>
+            <div class="wish2" id="rvDeseo" hidden></div>
+            <div class="ideas" id="rvIdeas"></div>
+            <p class="small-note">Ideas de aprox. Q25 · los precios cambian, confírmalo en la tienda.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <footer>🎅 ¡Feliz Navidad! · Con cariño, la organización del convivio</footer>
@@ -375,6 +506,185 @@ $('wishForm').addEventListener('submit', async e => {
     fx.burst(120);
   } catch (err) { $('wErr').textContent = '😕 ' + err.message; }
   finally { $('wSend').disabled = false; $('wSend').textContent = 'Publicar mi deseo ⭐'; }
+});
+/* ================= Amigo secreto ================= */
+const TIENDAS = {
+  walmart: ['Walmart', 'walmart.com.gt'], paiz: ['Paiz', 'paiz.com.gt'], latorre: ['La Torre', 'latorre.com.gt'],
+  maxi: ['Maxi Despensa', 'maxidespensa.com.gt'], cemaco: ['Cemaco', 'cemaco.com'], siman: ['Siman', 'gt.siman.com'],
+  dollar: ['Dollarcity', 'dollarcity.com'], dots: ['Dots', 'dotsco.com.gt'], kasperle: ['Kasperle', 'kasperle.com'],
+  china: ['China Depot', 'chinadepot-gt.com'], office: ['Office Depot', 'officedepot.com.gt'], progreso: ['Librería Progreso', 'libreriaprogreso.com'],
+  pacifiko: ['Pacifiko', 'pacifiko.com'], miniso: ['Miniso', 'miniso.com'],
+};
+const CATS = {
+  adulto: {
+    dulces:     { e: '🍫', n: 'Dulces y chocolates', t: ['latorre', 'walmart', 'paiz'], i: ['Caja pequeña de chocolates', 'Bolsa de dulces navideños', 'Barra de chocolate gourmet', 'Galletas navideñas'] },
+    snacks:     { e: '☕', n: 'Snacks y café', t: ['latorre', 'paiz', 'walmart'], i: ['Chocolate caliente en sobres', 'Café en presentación pequeña', 'Mix de snacks', 'Té o infusiones'] },
+    hogar:      { e: '🏠', n: 'Hogar y cocina', t: ['walmart', 'china', 'siman', 'latorre'], i: ['Taza navideña', 'Vela aromática', 'Set de portavasos', 'Toalla de cocina navideña'] },
+    papeleria:  { e: '✏️', n: 'Papelería', t: ['office', 'dollar', 'cemaco', 'walmart'], i: ['Libreta o agenda pequeña', 'Set de lapiceros de colores', 'Notas adhesivas', 'Stickers decorativos'] },
+    libros:     { e: '📚', n: 'Libros', t: ['progreso', 'office'], i: ['Libro de bolsillo', 'Libro de colorear antiestrés', 'Separadores de libro'] },
+    belleza:    { e: '💄', n: 'Belleza y cuidado', t: ['paiz', 'miniso', 'china'], i: ['Crema de manos', 'Bálsamo labial', 'Mascarilla facial', 'Set de pinzas o ligas'] },
+    accesorios: { e: '🧦', n: 'Accesorios', t: ['miniso', 'siman', 'china', 'pacifiko'], i: ['Calcetines navideños', 'Llavero divertido', 'Gorro navideño', 'Soporte para celular'] },
+    decoracion: { e: '🎄', n: 'Decoración navideña', t: ['dollar', 'cemaco', 'china'], i: ['Esfera o adorno navideño', 'Mini luces LED', 'Figura navideña pequeña', 'Centro de mesa pequeño'] },
+    variado:    { e: '🎁', n: 'Sorpréndanme', t: ['miniso', 'pacifiko', 'dollar', 'maxi'], i: ['Detalle de temporada', 'Artículo novedoso', 'Kit de regalo pequeño'] },
+  },
+  nino: {
+    carritos:  { e: '🚗', n: 'Carritos', t: ['walmart', 'dots', 'maxi', 'siman'], i: ['Carrito de colección', 'Carro de fricción', 'Camión pequeño'] },
+    munecas:   { e: '👸', n: 'Muñecas', t: ['walmart', 'dots', 'siman', 'china'], i: ['Muñeca pequeña', 'Accesorios para muñeca', 'Cocinita mini'] },
+    peluches:  { e: '🧸', n: 'Peluches', t: ['miniso', 'dots', 'china', 'walmart'], i: ['Peluche pequeño', 'Peluche llavero', 'Cojín de peluche'] },
+    armar:     { e: '🧱', n: 'Bloques y rompecabezas', t: ['kasperle', 'dots', 'walmart', 'cemaco'], i: ['Set pequeño de bloques', 'Rompecabezas', 'Figura para armar'] },
+    juegos:    { e: '🎲', n: 'Juegos de mesa', t: ['kasperle', 'cemaco', 'walmart'], i: ['Juego de cartas', 'Lotería infantil', 'Juego de memoria'] },
+    deportes:  { e: '⚽', n: 'Pelotas y aire libre', t: ['walmart', 'maxi', 'siman'], i: ['Pelota', 'Burbujas', 'Yoyo o trompo', 'Cuerda para saltar'] },
+    arte:      { e: '🎨', n: 'Manualidades y arte', t: ['kasperle', 'office', 'cemaco', 'dollar'], i: ['Plastilina', 'Crayones o marcadores', 'Libro para colorear', 'Set de stickers'] },
+    sorpresas: { e: '🦄', n: 'Slime y sorpresas', t: ['dots', 'miniso', 'china', 'maxi'], i: ['Slime', 'Juguete sorpresa', 'Squishy'] },
+  },
+};
+const buscar = (idea, tienda) => 'https://www.google.com/search?q=' + encodeURIComponent(`${idea} site:${TIENDAS[tienda][1]}`);
+
+let AM = { estado: 'registro', familias: [] }, rTipo = 'adulto', rGustos = new Set(), yo = null, yoPin = '', yoGustos = new Set();
+
+const chipsHTML = (tipo, sel) => Object.entries(CATS[tipo]).map(([k, c]) =>
+  `<button type="button" data-g="${k}" class="${sel.has(k) ? 'on' : ''}">${c.e} ${c.n}</button>`).join('');
+const toggleChip = set => e => { const b = e.target.closest('button[data-g]'); if (!b) return;
+  set.has(b.dataset.g) ? set.delete(b.dataset.g) : set.add(b.dataset.g); b.classList.toggle('on'); };
+
+// Pestañas
+document.querySelector('#amigo .tabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#amigo .tabs button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('#amigo .pane').forEach(p => p.classList.toggle('on', p.id === 'p-' + b.dataset.p));
+});
+
+// Tipo y gustos en la inscripción
+const renderRegChips = () => { $('rGustos').innerHTML = chipsHTML(rTipo, rGustos); };
+$('rTipo').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+  rTipo = b.dataset.t; rGustos.clear();
+  document.querySelectorAll('#rTipo button').forEach(x => x.classList.toggle('on', x === b)); renderRegChips(); });
+$('rGustos').addEventListener('click', toggleChip(rGustos));
+renderRegChips();
+['rPin', 'lPin'].forEach(id => $(id).addEventListener('input', e => e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4)));
+
+function renderAmigo() {
+  const on = AM.estado === 'sorteo';
+  $('phase').className = 'phase ' + (on ? 'on' : 'reg');
+  $('phase').textContent = on ? '🎡 ¡La tómbola está activa! Entra en "Mi tómbola" y gírala.' : '✍️ Inscripción abierta · la tómbola se activará pronto';
+  $('regForm').style.display = on ? 'none' : '';
+  const famSel = $('rFam').value;
+  $('rFam').innerHTML = '<option value="">Elige tu familia…</option>' + AM.familias.map(f =>
+    `<option value="${esc(f.id)}">Familia ${esc(f.apellidos)} (${esc(f.nombre)})</option>`).join('');
+  $('rFam').value = famSel;
+  const quien = $('lQuien').value;
+  $('lQuien').innerHTML = '<option value="">Busca tu nombre…</option>' + AM.familias.map(f => f.participantes.length ?
+    `<optgroup label="Familia ${esc(f.apellidos)}">${f.participantes.map(p => `<option value="${esc(p.id)}">${p.tipo === 'nino' ? '🧒' : '🧑'} ${esc(p.nombre)}</option>`).join('')}</optgroup>` : '').join('');
+  $('lQuien').value = quien;
+  $('board').innerHTML = AM.familias.map(f => {
+    const a = f.participantes.filter(p => p.tipo === 'adulto').length, n = f.participantes.length - a;
+    return `<div class="famcard"><h4>Familia ${esc(f.apellidos)} <small>🧑 ${a}/${f.adultos} · 🧒 ${n}/${f.ninos}</small></h4>
+      ${f.participantes.length ? `<ul>${f.participantes.map(p => `<li>${p.tipo === 'nino' ? '🧒' : '🧑'} ${esc(p.nombre)}</li>`).join('')}</ul>` : '<p class="none">Aún nadie inscrito</p>'}</div>`;
+  }).join('');
+}
+function loadAmigo() {
+  return fetch('/api/amigo', { cache: 'no-store' }).then(r => r.json()).then(j => { if (j.familias) { AM = j; renderAmigo(); } }).catch(() => {});
+}
+loadAmigo(); setInterval(() => { if (!document.hidden) loadAmigo(); }, 45000);
+
+const post = async (accion, data) => {
+  const r = await fetch('/api/amigo?accion=' + accion, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'Algo falló');
+  return j;
+};
+
+$('regForm').addEventListener('submit', async e => {
+  e.preventDefault(); $('rErr').textContent = ''; $('rOk').textContent = '';
+  const data = { familiaId: $('rFam').value, nombre: $('rNombre').value.trim(), tipo: rTipo, gustos: [...rGustos], deseo: $('rDeseo').value.trim(), pin: $('rPin').value };
+  if (!data.familiaId) return $('rErr').textContent = 'Elige tu familia';
+  if (data.nombre.length < 2) return $('rErr').textContent = 'Escribe el nombre';
+  if (!/^\d{4}$/.test(data.pin)) return $('rErr').textContent = 'El PIN debe tener 4 números';
+  $('rSend').disabled = true;
+  try {
+    const j = await post('registrar', data);
+    $('rOk').textContent = `🎉 ¡${j.participante.nombre} ya está en la tómbola! Guarda tu PIN.`;
+    $('rNombre').value = ''; $('rDeseo').value = ''; $('rPin').value = ''; rGustos.clear(); renderRegChips();
+    fx.burst(90); loadAmigo();
+  } catch (err) { $('rErr').textContent = '😕 ' + err.message; }
+  finally { $('rSend').disabled = false; }
+});
+
+// Entrar a "Mi tómbola"
+$('logForm').addEventListener('submit', async e => {
+  e.preventDefault(); $('lErr').textContent = '';
+  const id = $('lQuien').value, pin = $('lPin').value;
+  if (!id) return $('lErr').textContent = 'Elige tu nombre';
+  if (!/^\d{4}$/.test(pin)) return $('lErr').textContent = 'Escribe tu PIN de 4 números';
+  try {
+    const j = await post('perfil', { id, pin });
+    yo = j.yo; yoPin = pin; AM.estado = j.estado; showMio();
+  } catch (err) { $('lErr').textContent = '😕 ' + err.message; }
+});
+function showMio() {
+  $('logForm').hidden = true; $('mio').hidden = false;
+  $('yoNombre').textContent = `${yo.tipo === 'nino' ? '🧒' : '🧑'} ${yo.nombre} · ${yo.familia}`;
+  yoGustos = new Set(yo.gustos); $('yoGustos').innerHTML = chipsHTML(yo.tipo, yoGustos); $('yoDeseo').value = yo.deseo;
+  $('reveal').classList.remove('on'); $('drum').classList.remove('spin');
+  const on = AM.estado === 'sorteo';
+  $('tombola').style.display = on ? '' : 'none';
+  if (!on) { $('yoOk').textContent = 'La tómbola aún no está activa. Puedes ir afinando tu wish list 🎄'; return; }
+  $('yoOk').textContent = '';
+  $('spin').hidden = false;
+  $('ticker').textContent = yo.revelado ? '¡Ya giraste la tómbola! 🎁' : '¿A quién le regalas? 🤔';
+  $('spin').textContent = yo.revelado ? '👀 Ver mi amigo secreto' : '🎡 ¡Girar la tómbola!';
+  $('spinHint').textContent = 'Asegúrate de que nadie esté viendo tu pantalla 🤫';
+}
+$('yoGustos').addEventListener('click', toggleChip(yoGustos));
+$('salir').onclick = () => { yo = null; yoPin = ''; $('lPin').value = ''; $('mio').hidden = true; $('logForm').hidden = false; };
+$('yoSave').onclick = async () => {
+  $('yoOk').textContent = '';
+  try { await post('actualizar', { id: yo.id, pin: yoPin, gustos: [...yoGustos], deseo: $('yoDeseo').value.trim() });
+    yo.gustos = [...yoGustos]; yo.deseo = $('yoDeseo').value.trim(); $('yoOk').textContent = '✅ Wish list guardada';
+  } catch (err) { $('yoOk').textContent = '😕 ' + err.message; }
+};
+
+$('spin').onclick = async () => {
+  $('spin').disabled = true; $('spinHint').textContent = '';
+  let amigo;
+  try { amigo = (await post('revelar', { id: yo.id, pin: yoPin })).amigo; }
+  catch (err) { $('spinHint').textContent = '😕 ' + err.message; $('spin').disabled = false; return; }
+  const nombres = AM.familias.flatMap(f => f.participantes.map(p => p.nombre)).filter(n => n !== yo.nombre);
+  const finish = () => {
+    $('ticker').textContent = '🎉 ' + amigo.nombre + ' 🎉'; $('spin').hidden = true; $('spin').disabled = false;
+    showReveal(amigo); fx.burst(200); yo.revelado = true;
+  };
+  if (yo.revelado || matchMedia('(prefers-reduced-motion: reduce)').matches) return finish();
+  const drum = $('drum'); drum.classList.remove('spin'); void drum.offsetWidth; drum.classList.add('spin');
+  let t = 0; const start = performance.now();
+  (function roll() {
+    const el = performance.now() - start;
+    if (el > 3200) return finish();
+    if (el > t) { $('ticker').textContent = nombres.length ? nombres[Math.floor(Math.random() * nombres.length)] : '🎁'; t = el + 40 + (el / 3200) ** 3 * 380; }
+    requestAnimationFrame(roll);
+  })();
+};
+
+function showReveal(a) {
+  $('rvNombre').textContent = a.nombre;
+  $('rvFam').textContent = `${a.tipo === 'nino' ? '🧒 Niño' : '🧑 Adulto'} · ${a.familia}`;
+  $('rvDeseo').hidden = !a.deseo; $('rvDeseo').textContent = a.deseo ? `💭 "${a.deseo}"` : '';
+  const cats = CATS[a.tipo];
+  let keys = (a.gustos || []).filter(k => cats[k]);
+  if (!keys.length) keys = a.tipo === 'nino' ? Object.keys(cats) : ['dulces', 'hogar', 'accesorios', 'variado'];
+  $('rvIdeas').innerHTML = `<p class="hint" style="text-align:center">${a.tipo === 'nino' ? '🧸 Es niño: solo juguetes' : (a.gustos || []).length ? '✨ Según su wish list' : '✨ No llenó su wish list, aquí van ideas generales'}</p>` +
+    keys.map(k => { const c = cats[k];
+      return `<div class="idea" data-k="${k}"><h5>${c.e} ${c.n}</h5>
+        <div class="chips">${c.i.map((idea, n) => `<button type="button" data-idea="${esc(idea)}" class="${n === 0 ? 'on' : ''}">${esc(idea)}</button>`).join('')}</div>
+        <div class="stores">${storeLinks(c, c.i[0])}</div></div>`; }).join('');
+  $('reveal').classList.add('on');
+}
+const storeLinks = (c, idea) => c.t.map(t => `<a href="${buscar(idea, t)}" target="_blank" rel="noopener">🔎 ${TIENDAS[t][0]}</a>`).join('');
+$('rvIdeas').addEventListener('click', e => {
+  const b = e.target.closest('button[data-idea]'); if (!b) return;
+  const card = b.closest('.idea'); const tipo = /^(carritos|munecas|peluches|armar|juegos|deportes|arte|sorpresas)$/.test(card.dataset.k) ? 'nino' : 'adulto';
+  card.querySelectorAll('button[data-idea]').forEach(x => x.classList.toggle('on', x === b));
+  card.querySelector('.stores').innerHTML = storeLinks(CATS[tipo][card.dataset.k], b.dataset.idea);
 });
 </script>
 </body>

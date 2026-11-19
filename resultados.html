@@ -144,6 +144,22 @@
       </table>
     </div>
   </div>
+  <div class="panel" style="margin-top:20px">
+    <h2 style="font-family:'Mountains of Christmas',cursive;color:var(--red);font-size:2rem;margin-bottom:6px">🎁 Amigo secreto <span id="aN" style="font-family:Nunito;font-size:1rem;color:var(--muted)"></span></h2>
+    <p id="aEstado" style="font-weight:800;margin-bottom:12px"></p>
+    <div class="tools">
+      <button class="btn" id="aSortear" type="button">🎡 Cerrar inscripción y activar tómbola</button>
+      <button class="btn alt" id="aReabrir" type="button" hidden>↺ Reabrir inscripción (borra el sorteo)</button>
+      <span id="aMsg" style="font-weight:800"></span>
+    </div>
+    <div class="tbl-wrap">
+      <table style="min-width:640px">
+        <thead><tr><th>Familia</th><th>Participante</th><th>Tipo</th><th>Wish list</th><th>¿Ya giró?</th><th></th></tr></thead>
+        <tbody id="aRows"></tbody>
+      </table>
+    </div>
+    <p style="color:var(--muted);font-weight:700;font-size:.85rem;margin-top:10px">El sorteo es secreto también para el panel. Si alguien olvida su PIN, usa "Nuevo PIN" y compártelo solo con esa persona.</p>
+  </div>
   <p class="note">Se actualiza solo cada 20 segundos. Si una familia vuelve a enviar con el mismo nombre, se actualiza su respuesta.</p>
 </main>
 
@@ -174,6 +190,7 @@ async function load(fromLogin) {
     $('login').hidden = true; $('app').hidden = false;
     render();
     loadWishes();
+    loadAmigo();
   } catch (e) {
     if (fromLogin) $('loginErr').textContent = e.message;
     else $('updated').textContent = '⚠ ' + e.message;
@@ -256,6 +273,62 @@ $('wRows').addEventListener('click', async e => {
   b.textContent = '…';
   await fetch('/api/deseos?id=' + encodeURIComponent(b.dataset.id), { method: 'DELETE', headers: { 'x-pin': PIN } });
   loadWishes();
+});
+
+// ---------- Amigo secreto ----------
+let amEstado = 'registro';
+const amPost = async (accion, data = {}) => {
+  const r = await fetch('/api/amigo?accion=' + accion, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-pin': PIN }, body: JSON.stringify(data) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'Error');
+  return j;
+};
+async function loadAmigo() {
+  try {
+    const j = await (await fetch('/api/amigo?accion=admin', { headers: { 'x-pin': PIN }, cache: 'no-store' })).json();
+    if (!j.participantes) return;
+    amEstado = j.estado;
+    const ps = j.participantes.sort((a, b) => (a.familia + a.nombre).localeCompare(b.familia + b.nombre, 'es'));
+    const girados = ps.filter(p => p.revelado).length;
+    $('aN').textContent = `(${ps.length} inscritos)`;
+    $('aEstado').innerHTML = amEstado === 'sorteo'
+      ? `<span class="tag si">🎡 Tómbola activa</span> · ${girados} de ${ps.length} ya giraron`
+      : `<span class="tag" style="background:#fff7dc;color:#7a5a00">✍️ Inscripción abierta</span>`;
+    $('aSortear').hidden = amEstado === 'sorteo';
+    $('aReabrir').hidden = amEstado !== 'sorteo';
+    $('aRows').innerHTML = ps.length ? ps.map(p => `<tr>
+      <td>${esc(p.familia)}</td><td class="fam">${esc(p.nombre)}</td><td>${p.tipo === 'nino' ? '🧒 Niño' : '🧑 Adulto'}</td>
+      <td style="font-size:.85rem">${p.gustos.length} gusto${p.gustos.length === 1 ? '' : 's'}${p.deseo ? ' · 💭' : ''}</td>
+      <td>${p.revelado ? '<span class="tag si">✔ Sí</span>' : '—'}</td>
+      <td style="white-space:nowrap"><button class="btn alt apin" data-id="${esc(p.id)}" style="padding:5px 10px;font-size:.8rem">Nuevo PIN</button>
+        ${amEstado === 'registro' ? `<button class="del adel" data-id="${esc(p.id)}" title="Eliminar">🗑</button>` : ''}</td></tr>`).join('')
+      : '<tr><td colspan="6" class="empty">Aún no hay inscritos.</td></tr>';
+  } catch {}
+}
+function twoStep(b, label, fn) {
+  if (!b.dataset.armed) { const t = b.textContent; b.dataset.armed = 1; b.textContent = label;
+    setTimeout(() => { if (b.isConnected && b.dataset.armed) { delete b.dataset.armed; b.textContent = t; } }, 4000); return; }
+  delete b.dataset.armed; fn();
+}
+$('aSortear').onclick = e => twoStep(e.currentTarget, '¿Seguro? Ya no se podrá inscribir nadie', async () => {
+  $('aMsg').textContent = 'Sorteando…';
+  try { const j = await amPost('sortear'); $('aMsg').textContent = `✅ Sorteo hecho para ${j.total} personas`; }
+  catch (err) { $('aMsg').textContent = '⚠ ' + err.message; }
+  $('aSortear').textContent = '🎡 Cerrar inscripción y activar tómbola'; loadAmigo();
+});
+$('aReabrir').onclick = e => twoStep(e.currentTarget, '¿Seguro? Se borrará el sorteo actual', async () => {
+  try { await amPost('reabrir'); $('aMsg').textContent = 'Inscripción reabierta'; } catch (err) { $('aMsg').textContent = '⚠ ' + err.message; }
+  $('aReabrir').textContent = '↺ Reabrir inscripción (borra el sorteo)'; loadAmigo();
+});
+$('aRows').addEventListener('click', e => {
+  const pb = e.target.closest('.apin'), db = e.target.closest('.adel');
+  if (pb) twoStep(pb, '¿Generar?', async () => {
+    const quien = pb.closest('tr').querySelector('.fam').textContent;
+    try { const j = await amPost('resetpin', { id: pb.dataset.id }); $('aMsg').innerHTML = `🔐 Nuevo PIN de <b>${esc(quien)}</b>: <b style="font-size:1.2rem;letter-spacing:.15em">${j.pin}</b>`; }
+    catch (err) { $('aMsg').textContent = '⚠ ' + err.message; }
+    pb.textContent = 'Nuevo PIN';
+  });
+  if (db) twoStep(db, '¿Borrar?', async () => { try { await amPost('eliminar', { id: db.dataset.id }); } catch {} loadAmigo(); });
 });
 
 $('seg').addEventListener('click', e => {
