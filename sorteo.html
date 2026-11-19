@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sorteo · Solo organizador</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b2418">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--pine:#0b2418;--pine2:#123a27;--red:#c8102e;--gold:#f2c14e;--cream:#fff8ef;--ink:#2b1d14;--muted:#7a6656;--line:#eadbc6;--green:#1f9d55}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--pine)}
+  body{font-family:'Nunito',system-ui,sans-serif;color:var(--ink);min-height:100vh;background:linear-gradient(180deg,var(--pine2),var(--pine) 70%);background-attachment:fixed}
+  .wrap{max-width:900px;margin:0 auto;padding:26px 14px 40px}
+  h1{font-family:'Mountains of Christmas',cursive;color:#fff;font-size:clamp(2rem,6vw,2.6rem);text-shadow:0 2px 0 var(--red)}
+  .sub{color:#fff;opacity:.8;font-weight:700;margin:4px 0 18px}
+  .panel{background:var(--cream);border-radius:20px;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+  .login{max-width:360px;margin:12vh auto 0;text-align:center}
+  .login input{width:100%;font:inherit;font-size:1.3rem;font-weight:900;text-align:center;letter-spacing:.2em;padding:13px;border-radius:14px;border:2px solid var(--line);margin:14px 0 10px}
+  .btn{border:0;font:inherit;font-weight:900;padding:12px 16px;border-radius:12px;cursor:pointer;background:var(--red);color:#fff;box-shadow:0 4px 0 #7d0a1c}
+  .btn.alt{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+  .btn.g{background:var(--green);box-shadow:0 4px 0 #0f5e31}
+  .err{color:var(--red);font-weight:800;margin-top:10px;min-height:1.2em}
+  .tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .search{flex:1;min-width:180px;font:inherit;font-weight:700;padding:10px 14px;border-radius:12px;border:2px solid var(--line)}
+  .warn{background:#fff3c4;border-radius:12px;padding:10px 12px;font-weight:800;font-size:.9rem;margin-bottom:14px}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}
+  th,td{padding:10px;text-align:left;border-bottom:1px solid #f1e6d6;font-size:.92rem;vertical-align:top}
+  th{background:#fbf3e7;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  td small{display:block;color:var(--muted);font-weight:700;font-size:.78rem}
+  .arrow{font-size:1.2rem;text-align:center}
+  .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-weight:800;font-size:.75rem;background:#e5f8ec;color:#11713b;margin:1px 0}
+  .blur td.r{filter:blur(6px)}
+  .tbl{overflow-x:auto;border-radius:14px;border:2px solid var(--line)}
+</style>
+</head>
+<body>
+<section class="login" id="login">
+  <div class="panel">
+    <div style="font-size:3rem">🔐</div>
+    <h2 style="font-family:'Mountains of Christmas',cursive;color:var(--red);font-size:2rem">Solo organizador</h2>
+    <p style="color:var(--muted);font-weight:700">Ver quién le regala a quién</p>
+    <form id="f"><input type="password" id="pin" placeholder="PIN" autocomplete="off" autofocus><button class="btn" style="width:100%">Entrar</button></form>
+    <div class="err" id="err"></div>
+  </div>
+</section>
+
+<main class="wrap" id="app" hidden>
+  <h1>🔐 Sorteo completo</h1>
+  <p class="sub" id="sub"></p>
+  <div class="panel">
+    <div class="warn">🤫 Solo lectura: ver esta página no cambia nada de la tómbola. Cuida que nadie vea tu pantalla.</div>
+    <div class="tools">
+      <input class="search" id="q" type="search" placeholder="🔍 Buscar nombre…">
+      <button class="btn alt" id="ojo" type="button">🙈 Ocultar</button>
+      <button class="btn g" id="csv" type="button">⬇ Excel (CSV)</button>
+      <button class="btn alt" id="salir" type="button">Salir</button>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Regala</th><th></th><th>Le toca a</th><th>Estado</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+  </div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+let PIN = '', pares = [], q = '';
+const ico = t => t === 'nino' ? '🧒' : '🧑';
+
+async function cargar() {
+  const r = await fetch('/api/amigo?accion=versorteo', { headers: { 'x-pin-org': PIN }, cache: 'no-store' });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'Error');
+  pares = j.pares;
+  $('sub').textContent = `${pares.length} participantes · ${j.estado === 'sorteo' ? '🎡 Tómbola activa' : '✍️ Inscripción abierta (aún no hay sorteo)'}`;
+  $('login').hidden = true; $('app').hidden = false; pintar();
+}
+function pintar() {
+  const lista = pares.filter(p => !q || (p.da + ' ' + p.recibe).toLowerCase().includes(q));
+  $('rows').innerHTML = lista.map(p => `<tr>
+    <td><b>${ico(p.daTipo)} ${esc(p.da)}</b><small>${esc(p.daFamilia)}</small></td>
+    <td class="arrow">🎁➜</td>
+    <td class="r"><b>${p.recibe ? ico(p.recibeTipo) + ' ' + esc(p.recibe) : '— sin sorteo —'}</b><small>${esc(p.recibeFamilia)}</small>${p.pedido ? `<small>🎯 ${esc(p.pedido)}</small>` : ''}</td>
+    <td>${p.girado ? '<span class="tag">🎡 Ya giró</span>' : ''}${p.correo ? '<br><span class="tag">📧 Correo</span>' : ''}</td></tr>`).join('');
+}
+$('f').onsubmit = async e => { e.preventDefault(); PIN = $('pin').value.trim(); $('err').textContent = '';
+  try { await cargar(); } catch (err) { $('err').textContent = err.message; } };
+$('q').oninput = e => { q = e.target.value.trim().toLowerCase(); pintar(); };
+$('ojo').onclick = () => { const b = document.querySelector('table').classList.toggle('blur'); $('ojo').textContent = b ? '👀 Mostrar' : '🙈 Ocultar'; };
+$('salir').onclick = () => { PIN = ''; pares = []; $('rows').innerHTML = ''; $('pin').value = ''; $('app').hidden = true; $('login').hidden = false; };
+$('csv').onclick = () => {
+  const c = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const lines = [['Regala', 'Familia', 'Le toca a', 'Familia', 'Pidió', 'Ya giró'].map(c).join(',')]
+    .concat(pares.map(p => [p.da, p.daFamilia, p.recibe, p.recibeFamilia, p.pedido, p.girado ? 'Sí' : 'No'].map(c).join(',')));
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' })), download: 'sorteo-amigo-secreto.csv' });
+  a.click();
+};
+</script>
+</body>
+</html>

@@ -606,8 +606,7 @@ renderRegChips();
 function renderAmigo() {
   const on = AM.estado === 'sorteo';
   $('phase').className = 'phase ' + (on ? 'on' : 'reg');
-  $('phase').textContent = on ? '🎡 ¡La tómbola está activa! Entra en "Mi tómbola" y gírala.' : '✍️ Inscripción abierta · la tómbola se activará pronto';
-  $('regForm').style.display = on ? 'none' : '';
+  $('phase').textContent = on ? '🎡 ¡La tómbola está activa! Entra en "Mi tómbola" y gírala. ¿Te faltó inscribirte? Aún puedes hacerlo aquí abajo.' : '✍️ Inscripción abierta · la tómbola se activará pronto';
   const famSel = $('rFam').value;
   $('rFam').innerHTML = '<option value="">Elige tu familia…</option>' + AM.familias.map(f =>
     `<option value="${esc(f.id)}">Familia ${esc(f.apellidos)} (${esc(f.nombre)})</option>`).join('');
@@ -644,7 +643,7 @@ $('regForm').addEventListener('submit', async e => {
   $('rSend').disabled = true;
   try {
     const j = await post('registrar', data);
-    $('rOk').textContent = `🎉 ¡${j.participante.nombre} ya está en la tómbola! Guarda tu PIN.`;
+    $('rOk').textContent = j.tardia ? `🎉 ¡${j.participante.nombre} ya entró al sorteo! Ve a "Mi tómbola" y gírala con tu PIN.` : `🎉 ¡${j.participante.nombre} ya está en la tómbola! Guarda tu PIN.`;
     $('rNombre').value = ''; $('rDeseo').value = ''; $('rPedido').value = ''; $('rPedidoLink').value = ''; $('rPin').value = ''; $('rEmail').value = ''; rGustos.clear(); renderRegChips();
     fx.burst(90); loadAmigo();
   } catch (err) { $('rErr').textContent = '😕 ' + err.message; }
