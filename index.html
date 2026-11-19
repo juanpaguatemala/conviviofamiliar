@@ -158,7 +158,7 @@
   .pane{display:none}.pane.on{display:block;animation:rise .4s ease-out both}
   .box{background:#fff;border:2px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px}
   .box .lb2{font-weight:900;font-size:.95rem;display:block;margin-bottom:6px}
-  .box select,.box input[type=text],.box input[type=password],.box input[inputmode]{width:100%;font:inherit;font-weight:700;font-size:1rem;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:#fffdf9;color:var(--ink)}
+  .box select,.box input[type=text],.box input[type=email],.box input[type=password],.box input[inputmode]{width:100%;font:inherit;font-weight:700;font-size:1rem;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:#fffdf9;color:var(--ink)}
   .box select:focus,.box input:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,193,78,.25)}
   .types{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .types button{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 6px;font:inherit;font-weight:900;cursor:pointer}
@@ -219,7 +219,9 @@
   .prod .pt{font-size:.72rem;font-weight:900;color:#fff;background:var(--pine2);border-radius:999px;padding:2px 8px;align-self:flex-start}
   .prods .loading,.prods .nada{grid-column:1/-1;text-align:center;color:var(--muted);font-weight:700;font-size:.9rem;padding:10px}
   .more{margin-top:12px;border-top:2px dashed var(--line);padding-top:10px}
-  .more summary{cursor:pointer;font-weight:800;font-size:.88rem;color:var(--muted)}
+  .more .mt{font-weight:900;font-size:.88rem;color:var(--ink)}
+  .stores a.q25{background:var(--green)}
+  .stores a small{font-weight:800;opacity:.85;margin-left:2px}
   .small-note{font-size:.8rem;color:var(--muted);font-weight:700;text-align:center;margin-top:10px}
   .linkbtn{background:none;border:0;font:inherit;font-weight:800;color:#1f7a47;text-decoration:underline;cursor:pointer}
 
@@ -349,6 +351,8 @@
           <input type="text" id="rPedidoLink" maxlength="400" placeholder="Link del producto (opcional) https://…" inputmode="url">
           <p class="hint">Recuerda que el regalo es de Q25 🙂</p>
         </div>
+        <div><label class="lb2" for="rEmail">Correo electrónico</label><input type="email" id="rEmail" maxlength="120" placeholder="tucorreo@gmail.com" autocomplete="email" inputmode="email">
+          <p class="hint" style="margin-top:6px">📧 Ahí te llegará a quién te tocó regalar y sus ideas de regalo. Para niños, pon el correo de papá o mamá.</p></div>
         <div><label class="lb2" for="rPin">Crea un PIN de 4 números</label><input inputmode="numeric" id="rPin" class="pin" maxlength="4" placeholder="••••" autocomplete="off">
           <p class="hint" style="margin-top:6px">🔐 Lo necesitarás para girar la tómbola y ver a tu amigo secreto. Los papás pueden inscribir a sus niños.</p></div>
         <button class="send" id="rSend" type="submit">Inscribirme en la tómbola 🎁</button>
@@ -371,6 +375,7 @@
         <div class="box">
           <div class="row"><strong id="yoNombre"></strong><button type="button" class="linkbtn" id="salir">Salir</button></div>
           <div><span class="lb2">Mi wish list · lo que me gusta</span><div class="chips" id="yoGustos"></div></div>
+          <div><label class="lb2" for="yoEmail">Mi correo</label><input type="email" id="yoEmail" maxlength="120" inputmode="email" autocomplete="email"></div>
           <div><label class="lb2" for="yoDeseo">Algo puntual</label><input type="text" id="yoDeseo" maxlength="140"></div>
           <div class="esp">
             <span class="lb2" style="margin:0">🎯 Producto específico <small class="hint">(opcional)</small></span>
@@ -539,36 +544,41 @@ $('wishForm').addEventListener('submit', async e => {
 });
 /* ================= Amigo secreto ================= */
 const TIENDAS = {
-  walmart: ['Walmart', 'walmart.com.gt'], paiz: ['Paiz', 'paiz.com.gt'], latorre: ['La Torre', 'latorre.com.gt'],
-  maxi: ['Maxi Despensa', 'maxidespensa.com.gt'], cemaco: ['Cemaco', 'cemaco.com'], siman: ['Siman', 'gt.siman.com'],
+  walmart: ['Walmart', 'www.walmart.com.gt', 1], paiz: ['Paiz', 'www.paiz.com.gt', 1], latorre: ['La Torre', 'www.latorre.com.gt', 1],
+  maxi: ['Maxi Despensa', 'www.maxidespensa.com.gt', 1], cemaco: ['Cemaco', 'www.cemaco.com', 1], siman: ['Siman', 'gt.siman.com', 1],
   dollar: ['Dollarcity', 'dollarcity.com'], dots: ['Dots', 'dotsco.com.gt'], kasperle: ['Kasperle', 'kasperle.com'],
   china: ['China Depot', 'chinadepot-gt.com'], office: ['Office Depot', 'officedepot.com.gt'], progreso: ['Librería Progreso', 'libreriaprogreso.com'],
   pacifiko: ['Pacifiko', 'pacifiko.com'], miniso: ['Miniso', 'miniso.com'],
 };
 const CATS = {
   adulto: {
-    dulces:     { e: '🍫', n: 'Dulces y chocolates', t: ['latorre', 'walmart', 'paiz'], i: ['Caja pequeña de chocolates', 'Bolsa de dulces navideños', 'Barra de chocolate gourmet', 'Galletas navideñas'] },
-    snacks:     { e: '☕', n: 'Snacks y café', t: ['latorre', 'paiz', 'walmart'], i: ['Chocolate caliente en sobres', 'Café en presentación pequeña', 'Mix de snacks', 'Té o infusiones'] },
-    hogar:      { e: '🏠', n: 'Hogar y cocina', t: ['walmart', 'china', 'siman', 'latorre'], i: ['Taza navideña', 'Vela aromática', 'Set de portavasos', 'Toalla de cocina navideña'] },
-    papeleria:  { e: '✏️', n: 'Papelería', t: ['office', 'dollar', 'cemaco', 'walmart'], i: ['Libreta o agenda pequeña', 'Set de lapiceros de colores', 'Notas adhesivas', 'Stickers decorativos'] },
-    libros:     { e: '📚', n: 'Libros', t: ['progreso', 'office'], i: ['Libro de bolsillo', 'Libro de colorear antiestrés', 'Separadores de libro'] },
-    belleza:    { e: '💄', n: 'Belleza y cuidado', t: ['paiz', 'miniso', 'china'], i: ['Crema de manos', 'Bálsamo labial', 'Mascarilla facial', 'Set de pinzas o ligas'] },
-    accesorios: { e: '🧦', n: 'Accesorios', t: ['miniso', 'siman', 'china', 'pacifiko'], i: ['Calcetines navideños', 'Llavero divertido', 'Gorro navideño', 'Soporte para celular'] },
-    decoracion: { e: '🎄', n: 'Decoración navideña', t: ['dollar', 'cemaco', 'china'], i: ['Esfera o adorno navideño', 'Mini luces LED', 'Figura navideña pequeña', 'Centro de mesa pequeño'] },
-    variado:    { e: '🎁', n: 'Sorpréndanme', t: ['miniso', 'pacifiko', 'dollar', 'maxi'], i: ['Detalle de temporada', 'Artículo novedoso', 'Kit de regalo pequeño'] },
+    dulces:     { e: '🍫', n: 'Dulces y chocolates', t: ['latorre', 'walmart', 'paiz', 'maxi'], i: ['Caja pequeña de chocolates|chocolates', 'Bolsa de dulces navideños|dulces', 'Barra de chocolate gourmet|chocolate', 'Galletas navideñas|galletas'] },
+    snacks:     { e: '☕', n: 'Snacks y café', t: ['latorre', 'walmart', 'paiz', 'maxi'], i: ['Chocolate caliente en sobres|chocolate caliente', 'Café en presentación pequeña|cafe', 'Mix de snacks|snacks', 'Té o infusiones|te'] },
+    hogar:      { e: '🏠', n: 'Hogar y cocina', t: ['cemaco', 'walmart', 'siman', 'latorre', 'china'], i: ['Taza navideña|taza', 'Vela aromática|vela', 'Set de portavasos|portavasos', 'Toalla de cocina navideña|toalla cocina'] },
+    papeleria:  { e: '✏️', n: 'Papelería', t: ['walmart', 'cemaco', 'paiz', 'office', 'dollar'], i: ['Libreta o agenda pequeña|libreta', 'Set de lapiceros de colores|lapiceros', 'Notas adhesivas|notas adhesivas', 'Stickers decorativos|stickers'] },
+    libros:     { e: '📚', n: 'Libros', t: ['walmart', 'cemaco', 'progreso', 'office'], i: ['Libro de bolsillo|libro', 'Libro de colorear antiestrés|libro colorear', 'Separadores de libro|separador'] },
+    belleza:    { e: '💄', n: 'Belleza y cuidado', t: ['paiz', 'walmart', 'siman', 'miniso', 'china'], i: ['Crema de manos|crema', 'Bálsamo labial|balsamo labial', 'Mascarilla facial|mascarilla', 'Set de pinzas o ligas|pinzas'] },
+    accesorios: { e: '🧦', n: 'Accesorios', t: ['siman', 'walmart', 'cemaco', 'miniso', 'china', 'pacifiko'], i: ['Calcetines navideños|calcetines', 'Llavero divertido|llavero', 'Gorro navideño|gorro', 'Soporte para celular|soporte celular'] },
+    decoracion: { e: '🎄', n: 'Decoración navideña', t: ['cemaco', 'walmart', 'siman', 'paiz', 'dollar', 'china'], i: ['Esfera o adorno navideño|esfera', 'Mini luces LED|luces navidad', 'Figura navideña pequeña|figura navidad', 'Centro de mesa pequeño|centro de mesa'] },
+    variado:    { e: '🎁', n: 'Sorpréndanme', t: ['walmart', 'cemaco', 'siman', 'miniso', 'pacifiko', 'dollar'], i: ['Detalle de temporada|navidad', 'Artículo novedoso|regalo', 'Kit de regalo pequeño|set regalo'] },
   },
   nino: {
-    carritos:  { e: '🚗', n: 'Carritos', t: ['walmart', 'dots', 'maxi', 'siman'], i: ['Carrito de colección', 'Carro de fricción', 'Camión pequeño'] },
-    munecas:   { e: '👸', n: 'Muñecas', t: ['walmart', 'dots', 'siman', 'china'], i: ['Muñeca pequeña', 'Accesorios para muñeca', 'Cocinita mini'] },
-    peluches:  { e: '🧸', n: 'Peluches', t: ['miniso', 'dots', 'china', 'walmart'], i: ['Peluche pequeño', 'Peluche llavero', 'Cojín de peluche'] },
-    armar:     { e: '🧱', n: 'Bloques y rompecabezas', t: ['kasperle', 'dots', 'walmart', 'cemaco'], i: ['Set pequeño de bloques', 'Rompecabezas', 'Figura para armar'] },
-    juegos:    { e: '🎲', n: 'Juegos de mesa', t: ['kasperle', 'cemaco', 'walmart'], i: ['Juego de cartas', 'Lotería infantil', 'Juego de memoria'] },
-    deportes:  { e: '⚽', n: 'Pelotas y aire libre', t: ['walmart', 'maxi', 'siman'], i: ['Pelota', 'Burbujas', 'Yoyo o trompo', 'Cuerda para saltar'] },
-    arte:      { e: '🎨', n: 'Manualidades y arte', t: ['kasperle', 'office', 'cemaco', 'dollar'], i: ['Plastilina', 'Crayones o marcadores', 'Libro para colorear', 'Set de stickers'] },
-    sorpresas: { e: '🦄', n: 'Slime y sorpresas', t: ['dots', 'miniso', 'china', 'maxi'], i: ['Slime', 'Juguete sorpresa', 'Squishy'] },
+    carritos:  { e: '🚗', n: 'Carritos', t: ['walmart', 'maxi', 'cemaco', 'siman', 'dots'], i: ['Carrito de colección|carro', 'Carro de fricción|friccion', 'Camión pequeño|camion'] },
+    munecas:   { e: '👸', n: 'Muñecas', t: ['walmart', 'maxi', 'siman', 'dots', 'china'], i: ['Muñeca pequeña|muneca', 'Accesorios para muñeca|accesorios muneca', 'Cocinita mini|cocinita'] },
+    peluches:  { e: '🧸', n: 'Peluches', t: ['walmart', 'siman', 'cemaco', 'miniso', 'dots'], i: ['Peluche pequeño|peluche', 'Peluche llavero|peluche llavero', 'Cojín de peluche|cojin peluche'] },
+    armar:     { e: '🧱', n: 'Bloques y rompecabezas', t: ['cemaco', 'walmart', 'maxi', 'kasperle', 'dots'], i: ['Set pequeño de bloques|bloques', 'Rompecabezas|rompecabezas', 'Figura para armar|armar'] },
+    juegos:    { e: '🎲', n: 'Juegos de mesa', t: ['cemaco', 'walmart', 'siman', 'kasperle'], i: ['Juego de cartas|juego de cartas', 'Lotería infantil|loteria', 'Juego de memoria|memoria'] },
+    deportes:  { e: '⚽', n: 'Pelotas y aire libre', t: ['walmart', 'maxi', 'cemaco', 'siman'], i: ['Pelota|pelota', 'Burbujas|burbujas', 'Yoyo o trompo|yoyo', 'Cuerda para saltar|cuerda saltar'] },
+    arte:      { e: '🎨', n: 'Manualidades y arte', t: ['walmart', 'cemaco', 'paiz', 'kasperle', 'office', 'dollar'], i: ['Plastilina|plastilina', 'Crayones o marcadores|crayones', 'Libro para colorear|libro colorear', 'Set de stickers|stickers'] },
+    sorpresas: { e: '🦄', n: 'Slime y sorpresas', t: ['walmart', 'maxi', 'siman', 'dots', 'miniso'], i: ['Slime|slime', 'Juguete sorpresa|sorpresa', 'Squishy|squishy'] },
   },
 };
-const buscar = (idea, tienda) => 'https://www.google.com/search?q=' + encodeURIComponent(`${idea} site:${TIENDAS[tienda][1]}`);
+const buscar = (idea, tienda) => {
+  const [, dom, vtex] = TIENDAS[tienda];
+  const q = idea.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  return vtex ? `https://${dom}/${encodeURIComponent(q)}?_q=${encodeURIComponent(q)}&map=ft&priceRange=15%20TO%2030`
+              : 'https://www.google.com/search?q=' + encodeURIComponent(`${idea} site:${dom.replace(/^www\./, '')}`);
+};
 
 let AM = { estado: 'registro', familias: [] }, rTipo = 'adulto', rGustos = new Set(), yo = null, yoPin = '', yoGustos = new Set();
 
@@ -626,15 +636,16 @@ const post = async (accion, data) => {
 
 $('regForm').addEventListener('submit', async e => {
   e.preventDefault(); $('rErr').textContent = ''; $('rOk').textContent = '';
-  const data = { familiaId: $('rFam').value, nombre: $('rNombre').value.trim(), tipo: rTipo, gustos: [...rGustos], deseo: $('rDeseo').value.trim(), pedido: $('rPedido').value.trim(), pedidoLink: $('rPedidoLink').value.trim(), pin: $('rPin').value };
+  const data = { familiaId: $('rFam').value, nombre: $('rNombre').value.trim(), tipo: rTipo, gustos: [...rGustos], deseo: $('rDeseo').value.trim(), pedido: $('rPedido').value.trim(), pedidoLink: $('rPedidoLink').value.trim(), email: $('rEmail').value.trim(), pin: $('rPin').value };
   if (!data.familiaId) return $('rErr').textContent = 'Elige tu familia';
   if (data.nombre.length < 2) return $('rErr').textContent = 'Escribe el nombre';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) return $('rErr').textContent = 'Escribe un correo válido';
   if (!/^\d{4}$/.test(data.pin)) return $('rErr').textContent = 'El PIN debe tener 4 números';
   $('rSend').disabled = true;
   try {
     const j = await post('registrar', data);
     $('rOk').textContent = `🎉 ¡${j.participante.nombre} ya está en la tómbola! Guarda tu PIN.`;
-    $('rNombre').value = ''; $('rDeseo').value = ''; $('rPedido').value = ''; $('rPedidoLink').value = ''; $('rPin').value = ''; rGustos.clear(); renderRegChips();
+    $('rNombre').value = ''; $('rDeseo').value = ''; $('rPedido').value = ''; $('rPedidoLink').value = ''; $('rPin').value = ''; $('rEmail').value = ''; rGustos.clear(); renderRegChips();
     fx.burst(90); loadAmigo();
   } catch (err) { $('rErr').textContent = '😕 ' + err.message; }
   finally { $('rSend').disabled = false; }
@@ -654,7 +665,7 @@ $('logForm').addEventListener('submit', async e => {
 function showMio() {
   $('logForm').hidden = true; $('mio').hidden = false;
   $('yoNombre').textContent = `${yo.tipo === 'nino' ? '🧒' : '🧑'} ${yo.nombre} · ${yo.familia}`;
-  yoGustos = new Set(yo.gustos); $('yoGustos').innerHTML = chipsHTML(yo.tipo, yoGustos); $('yoDeseo').value = yo.deseo; $('yoPedido').value = yo.pedido || ''; $('yoPedidoLink').value = yo.pedidoLink || '';
+  yoGustos = new Set(yo.gustos); $('yoGustos').innerHTML = chipsHTML(yo.tipo, yoGustos); $('yoDeseo').value = yo.deseo; $('yoPedido').value = yo.pedido || ''; $('yoPedidoLink').value = yo.pedidoLink || ''; $('yoEmail').value = yo.email || '';
   $('reveal').classList.remove('on'); $('drum').classList.remove('spin');
   const on = AM.estado === 'sorteo';
   $('tombola').style.display = on ? '' : 'none';
@@ -669,7 +680,7 @@ $('yoGustos').addEventListener('click', toggleChip(yoGustos));
 $('salir').onclick = () => { yo = null; yoPin = ''; $('lPin').value = ''; $('mio').hidden = true; $('logForm').hidden = false; };
 $('yoSave').onclick = async () => {
   $('yoOk').textContent = '';
-  try { await post('actualizar', { id: yo.id, pin: yoPin, gustos: [...yoGustos], deseo: $('yoDeseo').value.trim(), pedido: $('yoPedido').value.trim(), pedidoLink: $('yoPedidoLink').value.trim() });
+  try { await post('actualizar', { id: yo.id, pin: yoPin, gustos: [...yoGustos], deseo: $('yoDeseo').value.trim(), pedido: $('yoPedido').value.trim(), pedidoLink: $('yoPedidoLink').value.trim(), email: $('yoEmail').value.trim() });
     const j = await post('perfil', { id: yo.id, pin: yoPin }); yo = j.yo; $('yoPedidoLink').value = yo.pedidoLink || '';
     $('yoOk').textContent = '✅ Wish list guardada';
   } catch (err) { $('yoOk').textContent = '😕 ' + err.message; }
@@ -711,9 +722,9 @@ function showReveal(a) {
     keys.map(k => { const c = cats[k];
       return `<div class="idea" data-k="${k}"><h5>${c.e} ${c.n}</h5>
         <div class="prods" id="prods-${k}"><div class="loading">🔎 Buscando productos de ~Q25 en las tiendas…</div></div>
-        <details class="more"><summary>💡 Más ideas y otras tiendas</summary>
-          <div class="chips" style="margin-top:8px">${c.i.map((idea, n) => `<button type="button" data-idea="${esc(idea)}" class="${n === 0 ? 'on' : ''}">${esc(idea)}</button>`).join('')}</div>
-          <div class="stores">${storeLinks(c, c.i[0])}</div></details></div>`; }).join('');
+        <div class="more"><p class="mt">🔎 Busca más regalos de ~Q25 en las tiendas</p>
+          <div class="chips" style="margin-top:6px">${c.i.map((x, n) => { const [lab, q] = x.split('|'); return `<button type="button" data-idea="${esc(q)}" class="${n === 0 ? 'on' : ''}">${esc(lab)}</button>`; }).join('')}</div>
+          <div class="stores">${storeLinks(c, c.i[0].split('|')[1])}</div></div></div>`; }).join('');
   $('reveal').classList.add('on');
   keys.forEach(k => cargarProductos(a.tipo, k));
 }
@@ -725,10 +736,10 @@ async function cargarProductos(tipo, k) {
     box.innerHTML = ps.length ? ps.map(p => `<a class="prod" href="${esc(p.link)}" target="_blank" rel="noopener">
         <img loading="lazy" src="${esc(p.img)}" alt="" onerror="this.style.visibility='hidden'">
         <div class="pi"><span class="pt">${esc(p.tienda)}</span><span class="pn">${esc(p.nombre)}</span><span class="pp">Q${p.precio.toFixed(2)}</span></div></a>`).join('')
-      : '<div class="nada">No encontramos productos en este momento. Abre "Más ideas y otras tiendas" 👇</div>';
-  } catch { box.innerHTML = '<div class="nada">No se pudo buscar ahora. Abre "Más ideas y otras tiendas" 👇</div>'; }
+      : '<div class="nada">No encontramos productos en este momento. Usa los botones de abajo 👇</div>';
+  } catch { box.innerHTML = '<div class="nada">No se pudo buscar ahora. Usa los botones de abajo 👇</div>'; }
 }
-const storeLinks = (c, idea) => c.t.map(t => `<a href="${buscar(idea, t)}" target="_blank" rel="noopener">🔎 ${TIENDAS[t][0]}</a>`).join('');
+const storeLinks = (c, idea) => c.t.map(t => `<a href="${buscar(idea, t)}" target="_blank" rel="noopener" class="${TIENDAS[t][2] ? 'q25' : ''}">🔎 ${TIENDAS[t][0]}${TIENDAS[t][2] ? ' <small>Q15–30</small>' : ''}</a>`).join('');
 $('rvIdeas').addEventListener('click', e => {
   const b = e.target.closest('button[data-idea]'); if (!b) return;
   const card = b.closest('.idea'); const tipo = /^(carritos|munecas|peluches|armar|juegos|deportes|arte|sorpresas)$/.test(card.dataset.k) ? 'nino' : 'adulto';

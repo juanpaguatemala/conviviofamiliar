@@ -149,12 +149,13 @@
     <p id="aEstado" style="font-weight:800;margin-bottom:12px"></p>
     <div class="tools">
       <button class="btn" id="aSortear" type="button">🎡 Cerrar inscripción y activar tómbola</button>
+      <button class="btn" id="aCorreos" type="button" hidden style="background:#1a73e8;box-shadow:0 3px 0 #0c4cad">📧 Enviar correos pendientes</button>
       <button class="btn alt" id="aReabrir" type="button" hidden>↺ Reabrir inscripción (borra el sorteo)</button>
       <span id="aMsg" style="font-weight:800"></span>
     </div>
     <div class="tbl-wrap">
       <table style="min-width:640px">
-        <thead><tr><th>Familia</th><th>Participante</th><th>Tipo</th><th>Gustos · wish list</th><th>¿Ya giró?</th><th></th></tr></thead>
+        <thead><tr><th>Familia</th><th>Participante</th><th>Tipo</th><th>Gustos · wish list</th><th>Correo</th><th>¿Ya giró?</th><th></th></tr></thead>
         <tbody id="aRows"></tbody>
       </table>
     </div>
@@ -302,15 +303,24 @@ async function loadAmigo() {
       : `<span class="tag" style="background:#fff7dc;color:#7a5a00">✍️ Inscripción abierta</span>`;
     $('aSortear').hidden = amEstado === 'sorteo';
     $('aReabrir').hidden = amEstado !== 'sorteo';
+    const pendientes = ps.filter(p => p.email && !p.correoEnviado).length, enviados = ps.filter(p => p.correoEnviado).length;
+    $('aCorreos').hidden = amEstado !== 'sorteo';
+    $('aCorreos').textContent = pendientes ? `📧 Enviar correos pendientes (${pendientes})` : '📧 Todos los correos enviados';
+    $('aCorreos').disabled = !pendientes;
+    if (amEstado === 'sorteo') $('aEstado').innerHTML += ` · 📧 ${enviados} correo${enviados === 1 ? '' : 's'} enviado${enviados === 1 ? '' : 's'}`;
+    if (!j.correoConfigurado) $('aEstado').innerHTML += ' · <span style="color:var(--red)">⚠ Falta configurar el envío de correos</span>';
     $('aRows').innerHTML = ps.length ? ps.map(p => `<tr>
       <td>${esc(p.familia)}</td><td class="fam">${esc(p.nombre)}</td><td>${p.tipo === 'nino' ? '🧒 Niño' : '🧑 Adulto'}</td>
       <td style="font-size:.82rem;max-width:340px">${p.gustos.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${p.gustos.map(g => `<span class="tag" style="background:#fbf3e7;color:var(--ink)">${GUSTO_NOMBRE[g] || esc(g)}</span>`).join('')}</div>` : '<span style="color:var(--muted)">Sin gustos</span>'}
         ${p.deseo ? `<div style="margin-top:4px;font-weight:700">💭 ${esc(p.deseo)}</div>` : ''}
         ${p.pedido || p.pedidoLink ? `<div style="margin-top:4px;font-weight:700;background:#fff3c4;border-radius:8px;padding:4px 8px">🎯 ${esc(p.pedido || 'Producto específico')}${p.pedidoLink && /^https?:\/\//i.test(p.pedidoLink) ? ` · <a href="${esc(p.pedidoLink)}" target="_blank" rel="noopener nofollow">ver link ↗</a>` : ''}</div>` : ''}</td>
+      <td style="font-size:.82rem">${p.email ? esc(p.email) : '<span style="color:var(--red);font-weight:800">Sin correo</span>'}
+        ${p.correoEnviado ? `<div class="tag si" style="margin-top:3px">📧 Enviado ${dt.format(new Date(p.correoEnviado))}</div>` : ''}
+        ${amEstado === 'sorteo' && p.email ? `<div><button class="linkbtn amail" data-id="${esc(p.id)}" style="background:none;border:0;color:#1a73e8;font-weight:800;cursor:pointer;padding:3px 0;text-decoration:underline">${p.correoEnviado ? 'Reenviar' : 'Enviar'}</button></div>` : ''}</td>
       <td>${p.revelado ? '<span class="tag si">✔ Sí</span>' : '—'}</td>
       <td style="white-space:nowrap"><button class="btn alt apin" data-id="${esc(p.id)}" style="padding:5px 10px;font-size:.8rem">Nuevo PIN</button>
         ${amEstado === 'registro' ? `<button class="del adel" data-id="${esc(p.id)}" title="Eliminar">🗑</button>` : ''}</td></tr>`).join('')
-      : '<tr><td colspan="6" class="empty">Aún no hay inscritos.</td></tr>';
+      : '<tr><td colspan="7" class="empty">Aún no hay inscritos.</td></tr>';
   } catch {}
 }
 function twoStep(b, label, fn) {
@@ -328,8 +338,26 @@ $('aReabrir').onclick = e => twoStep(e.currentTarget, '¿Seguro? Se borrará el 
   try { await amPost('reabrir'); $('aMsg').textContent = 'Inscripción reabierta'; } catch (err) { $('aMsg').textContent = '⚠ ' + err.message; }
   $('aReabrir').textContent = '↺ Reabrir inscripción (borra el sorteo)'; loadAmigo();
 });
+const resumenCorreo = j => {
+  let m = `✅ ${j.enviados} correo${j.enviados === 1 ? '' : 's'} enviado${j.enviados === 1 ? '' : 's'}`;
+  if (j.fallidos && j.fallidos.length) m += ` · ⚠ fallaron: ${j.fallidos.join(', ')}`;
+  if (j.sinCorreo && j.sinCorreo.length) m += ` · sin correo: ${j.sinCorreo.join(', ')}`;
+  if (j.pendientes) m += ` · quedan ${j.pendientes} (presiona de nuevo)`;
+  return m;
+};
+$('aCorreos').onclick = e => twoStep(e.currentTarget, '¿Enviar ahora a todos los pendientes?', async () => {
+  $('aMsg').textContent = '📧 Enviando correos… puede tardar un poco';
+  try { $('aMsg').textContent = resumenCorreo(await amPost('enviarcorreos')); } catch (err) { $('aMsg').textContent = '⚠ ' + err.message; }
+  loadAmigo();
+});
 $('aRows').addEventListener('click', e => {
-  const pb = e.target.closest('.apin'), db = e.target.closest('.adel');
+  const pb = e.target.closest('.apin'), db = e.target.closest('.adel'), mb = e.target.closest('.amail');
+  if (mb) twoStep(mb, '¿Seguro?', async () => {
+    const quien = mb.closest('tr').querySelector('.fam').textContent;
+    $('aMsg').textContent = `📧 Enviando a ${quien}…`;
+    try { $('aMsg').textContent = resumenCorreo(await amPost('enviarcorreos', { ids: [mb.dataset.id] })); } catch (err) { $('aMsg').textContent = '⚠ ' + err.message; }
+    loadAmigo();
+  });
   if (pb) twoStep(pb, '¿Generar?', async () => {
     const quien = pb.closest('tr').querySelector('.fam').textContent;
     try { const j = await amPost('resetpin', { id: pb.dataset.id }); $('aMsg').innerHTML = `🔐 Nuevo PIN de <b>${esc(quien)}</b>: <b style="font-size:1.2rem;letter-spacing:.15em">${j.pin}</b>`; }
