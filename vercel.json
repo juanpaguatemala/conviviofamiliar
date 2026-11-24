@@ -1,6 +1,10 @@
 {
   "cleanUrls": true,
   "functions": {
-    "api/amigo.js": { "maxDuration": 60 }
-  }
+    "api/amigo.js": { "maxDuration": 60 },
+    "api/cuenta-regresiva.js": { "maxDuration": 60 }
+  },
+  "crons": [
+    { "path": "/api/cuenta-regresiva", "schedule": "0 13 24-29 11 *" }
+  ]
 }
