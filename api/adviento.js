@@ -69,6 +69,17 @@ export default async function handler(req, res) {
   const b = readBody(req);
   const accion = String(req.query.accion || b.accion || '');
   try {
+    if (req.method === 'GET' && accion === 'admin') {
+      if ((req.headers['x-pin'] || '') !== ADMIN) return res.status(401).json({ error: 'PIN incorrecto' });
+      const [fams, resp] = await Promise.all([familias(), respuestas()]);
+      const label = id => { const f = fams.find(x => x.id === id); return f ? `Familia ${f.apellidos}` : id; };
+      return res.status(200).json({
+        domingos: DOMINGOS,
+        respuestas: resp.map(r => ({ ...r, familia: label(r.familiaId) })).sort((a, b) => a.familia.localeCompare(b.familia, 'es')),
+        sinResponder: fams.filter(f => !resp.some(r => r.familiaId === f.id)).map(f => `Familia ${f.apellidos}`),
+      });
+    }
+
     if (req.method === 'GET') {
       const [fams, resp] = await Promise.all([familias(), respuestas()]);
       const label = id => { const f = fams.find(x => x.id === id); return f ? `Familia ${f.apellidos}` : ''; };
