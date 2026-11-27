@@ -57,7 +57,7 @@ function correoHTML(nombres) {
         ${btn(SITIO + '/adviento', '🕯️ Responder la encuesta', '#6b2d8c')}
       </div>
       <p style="font-size:15px;line-height:1.6;margin:0;text-align:center;font-style:italic">«Preparen el camino del Señor» — Lucas 3, 4</p>
-      <div style="text-align:center;margin-top:16px">${btn('https://www.biencatolicos.com/', 'Vive el Adviento con BienCatólicos', '#123a27')}</div>
+      <div style="text-align:center;margin-top:16px">${btn('https://adviento.biencatolicos.com/', 'Vive el Adviento con BienCatólicos', '#123a27')}</div>
     </td></tr>
     <tr><td style="background:#123a27;color:#f2c14e;text-align:center;padding:14px;font-size:12px;font-weight:700;font-family:Arial,Helvetica,sans-serif">
       ¡Nos vemos este domingo 29 en Donde Mario's · San José Pinula! 🎄</td></tr>
