@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adviento en familia · 4 domingos, 4 hogares</title>
+<meta name="description" content="Unámonos los cuatro domingos de Adviento en cuatro hogares para encender juntos la corona.">
+<meta property="og:title" content="🕯️ Adviento en familia · 4 domingos, 4 hogares">
+<meta property="og:description" content="¿Tu hogar puede recibirnos un domingo de Adviento? Responde la encuesta.">
+<meta name="theme-color" content="#2a1238">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--deep:#1c0b28;--purple:#4a1f66;--violet:#6b2d8c;--rose:#d6588f;--gold:#f2c14e;--cream:#fff8ef;--ink:#2b1d14;--muted:#7a6656;--line:#eadbc6;--green:#1f9d55}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--deep)}
+  body{font-family:'Nunito',system-ui,sans-serif;color:var(--ink);min-height:100vh;overflow-x:hidden;
+    background:radial-gradient(ellipse at 50% -10%,#5b2a7c 0%,transparent 60%),linear-gradient(180deg,#2a1238,var(--deep) 70%);background-attachment:fixed}
+  #stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:30px 16px 40px}
+  header{text-align:center;color:#fff}
+  .kicker{display:inline-block;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.76rem;color:var(--gold);border:1px solid rgba(242,193,78,.5);padding:6px 14px;border-radius:999px}
+  h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,8vw,3.6rem);margin:12px 0 4px;text-shadow:0 0 30px rgba(242,193,78,.35)}
+  .sub{font-weight:700;opacity:.9;font-size:1.05rem}
+
+  /* Corona */
+  .corona{position:relative;width:300px;height:170px;margin:20px auto 6px}
+  .ramas{position:absolute;left:10px;right:10px;bottom:0;height:56px;border-radius:50%;
+    background:radial-gradient(circle at 20% 50%,#2f7a46 0 18%,transparent 19%),radial-gradient(circle at 50% 40%,#2f7a46 0 22%,transparent 23%),radial-gradient(circle at 80% 50%,#2f7a46 0 18%,transparent 19%),linear-gradient(#1f5a33,#163f24);
+    box-shadow:0 10px 30px rgba(0,0,0,.4)}
+  .ramas::after{content:"";position:absolute;inset:14px 40px;border-radius:50%;background:radial-gradient(circle,#c8102e 0 3px,transparent 4px) 0 0/26px 18px}
+  .velas{position:absolute;left:0;right:0;bottom:28px;display:flex;justify-content:center;gap:30px;align-items:flex-end}
+  .vela{position:relative;width:24px;border-radius:5px 5px 3px 3px;box-shadow:inset -5px 0 0 rgba(0,0,0,.15)}
+  .vela:nth-child(1){height:92px}.vela:nth-child(2){height:84px}.vela:nth-child(3){height:76px}.vela:nth-child(4){height:68px}
+  .vela::before{content:"";position:absolute;top:-8px;left:11px;width:2px;height:8px;background:#333}
+  .llama{position:absolute;top:-30px;left:50%;width:14px;height:22px;margin-left:-7px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+    background:radial-gradient(circle at 50% 70%,#fff 0 20%,#ffd54a 40%,#ff8a00 75%,transparent 76%);filter:drop-shadow(0 0 10px #ffb300);
+    opacity:0;transform-origin:50% 100%;animation:flick 1.4s ease-in-out infinite alternate}
+  .vela.on .llama{opacity:1}
+  @keyframes flick{0%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.08,0.95) rotate(2deg)}100%{transform:scale(.96,1.05) rotate(-1deg)}}
+
+  .card{background:var(--cream);border-radius:22px;padding:24px 20px;margin-top:22px;box-shadow:0 24px 60px rgba(0,0,0,.45),inset 0 0 0 3px #fff,inset 0 0 0 6px var(--violet)}
+  .card h2{font-family:'Playfair Display',serif;color:var(--purple);font-size:1.8rem;text-align:center;line-height:1.15}
+  .card .lead{text-align:center;color:var(--muted);font-weight:700;margin:6px 0 16px}
+  .intro p{font-size:1.05rem;line-height:1.65;margin-bottom:10px}
+  .intro .verso{text-align:center;font-style:italic;color:var(--purple);font-weight:700;margin-top:6px}
+
+  .domingos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .dom{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px;position:relative;overflow:hidden}
+  .dom::before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:var(--c)}
+  .dom h3{font-size:1rem;font-weight:900}
+  .dom .vl{font-weight:900;color:var(--c);font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
+  .dom .nt{font-size:.78rem;color:var(--muted);font-weight:700;margin:2px 0 8px}
+  .dom ul{list-style:none;display:grid;gap:4px}
+  .dom li{font-weight:800;font-size:.9rem}
+  .dom li small{color:var(--muted);font-weight:700}
+  .dom .none{color:var(--muted);font-weight:700;font-size:.88rem}
+  .dom .cnt{margin-top:8px;font-size:.8rem;font-weight:800;color:var(--green)}
+
+  .form{display:grid;gap:14px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px}
+  .lb{font-weight:900;display:block;margin-bottom:6px}
+  .form select,.form input,.form textarea{width:100%;font:inherit;font-weight:700;font-size:1rem;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:#fffdf9;color:var(--ink)}
+  .form textarea{min-height:70px;resize:vertical}
+  .form :is(select,input,textarea):focus{outline:0;border-color:var(--violet);box-shadow:0 0 0 4px rgba(107,45,140,.15)}
+  .ops{display:grid;gap:8px}
+  .ops button{text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font:inherit;font-weight:800;cursor:pointer;display:flex;gap:10px;align-items:center}
+  .ops button span{font-size:1.5rem}
+  .ops button small{display:block;font-weight:700;color:var(--muted);font-size:.82rem}
+  .ops button.on{border-color:var(--violet);background:#f6eefc;box-shadow:0 0 0 4px rgba(107,45,140,.12)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-weight:800;font-size:.9rem;cursor:pointer}
+  .chips button.on{border-color:var(--violet);background:#f6eefc;color:var(--purple)}
+  .hint{font-size:.82rem;color:var(--muted);font-weight:700}
+  .send{border:0;cursor:pointer;font:inherit;font-weight:900;font-size:1.1rem;color:#fff;padding:15px;border-radius:14px;background:linear-gradient(135deg,#8a3fb5,var(--violet));box-shadow:0 5px 0 #3b1652}
+  .send:active{transform:translateY(3px);box-shadow:0 2px 0 #3b1652}
+  .send:disabled{opacity:.7}
+  .msg{text-align:center;font-weight:800;min-height:1.2em}
+  .msg.err{color:#c8102e}.msg.ok{color:var(--green)}
+  .back{display:block;text-align:center;color:#fff;opacity:.8;font-weight:800;margin-top:22px;text-decoration:none}
+  footer{text-align:center;color:rgba(255,255,255,.6);font-size:.85rem;margin-top:10px}
+  @media (max-width:560px){.domingos{grid-template-columns:1fr}.corona{transform:scale(.85)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<main class="wrap">
+  <header>
+    <span class="kicker">🕯️ Adviento en familia</span>
+    <h1>4 domingos, 4 hogares</h1>
+    <p class="sub">Encendamos juntos la corona y preparemos el corazón para la Navidad</p>
+    <div class="corona" aria-hidden="true">
+      <div class="velas">
+        <div class="vela" style="background:#6b2d8c"><i class="llama"></i></div>
+        <div class="vela" style="background:#6b2d8c"><i class="llama"></i></div>
+        <div class="vela" style="background:#d6588f"><i class="llama"></i></div>
+        <div class="vela" style="background:#6b2d8c"><i class="llama"></i></div>
+      </div>
+      <div class="ramas"></div>
+    </div>
+  </header>
+
+  <section class="card intro">
+    <p>El <b>Adviento</b> son las cuatro semanas en que preparamos el corazón para recibir a Jesús. Cada domingo encendemos una vela de la corona: <b>esperanza, paz, alegría y amor</b>.</p>
+    <p>Les proponemos que la convivencia no termine el domingo 29: <b>cada domingo de Adviento una familia recibe a las demás en su hogar</b>, encendemos juntos la vela de la semana, rezamos un momento y compartimos.</p>
+    <p class="verso">«Preparen el camino del Señor» — Lucas 3, 4</p>
+  </section>
+
+  <section class="card">
+    <h2>Los cuatro domingos</h2>
+    <p class="lead">Familias que se ofrecen a recibir 🏠</p>
+    <div class="domingos" id="domingos"><p class="hint">Cargando…</p></div>
+  </section>
+
+  <section class="card" id="encuesta">
+    <h2>Encuesta</h2>
+    <p class="lead">Una respuesta por familia · menos de un minuto</p>
+    <form class="form" id="f" novalidate>
+      <div><label class="lb" for="fam">Familia</label><select id="fam"><option value="">Elige tu familia…</option></select></div>
+      <div><label class="lb" for="nom">Tu nombre</label><input id="nom" maxlength="40" placeholder="Ej. Natali"></div>
+      <div>
+        <span class="lb">¿Cómo quieren participar?</span>
+        <div class="ops" id="ops">
+          <button type="button" data-o="anfitrion"><span>🏠</span><div>¡Recibimos en nuestro hogar!<small>Nos ofrecemos para un domingo</small></div></button>
+          <button type="button" data-o="asistir"><span>🕯️</span><div>Nos unimos a los encuentros<small>Llegamos a la casa que toque</small></div></button>
+          <button type="button" data-o="no"><span>🙏</span><div>Esta vez no podemos<small>Los acompañamos en oración</small></div></button>
+        </div>
+      </div>
+      <div id="bloqueDom" hidden>
+        <span class="lb" id="lbDom">¿Qué domingos?</span>
+        <div class="chips" id="chips"></div>
+        <p class="hint" style="margin-top:6px">Puedes marcar varios.</p>
+      </div>
+      <div id="bloquePers" hidden><label class="lb" for="pers">¿Cuántas personas de tu familia?</label><input id="pers" type="number" min="1" max="30" value="2" inputmode="numeric"></div>
+      <div id="bloqueZona" hidden><label class="lb" for="zona">Zona o colonia <small class="hint">(para organizarnos)</small></label><input id="zona" maxlength="60" placeholder="Ej. Zona 16, San José Pinula…"></div>
+      <div><label class="lb" for="com">Comentario <small class="hint">(opcional)</small></label><textarea id="com" maxlength="200" placeholder="Ej. podemos a partir de las 5:00 p. m."></textarea></div>
+      <button class="send" id="send" type="submit">Enviar mi respuesta 🕯️</button>
+      <p class="msg" id="msg" role="alert"></p>
+    </form>
+  </section>
+
+  <a class="back" href="/">← Volver a la página del convivio</a>
+  <footer>Vive el Adviento también en <a href="https://www.biencatolicos.com/" style="color:var(--gold)">BienCatólicos.com</a></footer>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+/* Estrellas */
+(() => { const c = $('stars'), x = c.getContext('2d'); let W, H, s = [];
+  const size = () => { W = c.width = innerWidth; H = c.height = innerHeight; s = Array.from({ length: Math.round(W * H / 9000) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.4 + .3, p: Math.random() * 6.28 })); };
+  size(); addEventListener('resize', size);
+  (function loop(t) { x.clearRect(0, 0, W, H); for (const a of s) { x.globalAlpha = .35 + .35 * Math.sin(t / 900 + a.p); x.fillStyle = '#fff'; x.beginPath(); x.arc(a.x, a.y, a.r, 0, 6.28); x.fill(); } requestAnimationFrame(loop); })(0);
+})();
+
+/* Velas encendidas según la fecha (hora de Guatemala) */
+(() => { const hoy = new Date(Date.now() - 6 * 3600e3).toISOString().slice(0, 10);
+  ['2026-11-29', '2026-12-06', '2026-12-13', '2026-12-20'].forEach((d, i) => { if (hoy >= d) document.querySelectorAll('.vela')[i].classList.add('on'); });
+  if (hoy < '2026-11-29') document.querySelectorAll('.vela')[0].classList.add('on'); // vista previa: la primera ya brilla
+})();
+
+let D = { domingos: [], familias: [] }, opcion = '', sel = new Set();
+
+function pintar() {
+  $('domingos').innerHTML = D.domingos.map(d => `<div class="dom" style="--c:${d.color}">
+    <div class="vl">🕯️ ${esc(d.vela)}</div><h3>${esc(d.fecha)}</h3><div class="nt">${esc(d.nota)}</div>
+    ${d.anfitriones.length ? `<ul>${d.anfitriones.map(a => `<li>🏠 ${esc(a.familia)} <small>· ${esc(a.nombre)}${a.zona ? ' · ' + esc(a.zona) : ''}</small></li>`).join('')}</ul>` : '<p class="none">Aún nadie se ofrece… ¿tu hogar? 🙂</p>'}
+    ${d.asistentes ? `<div class="cnt">🙋 ${d.asistentes} persona${d.asistentes === 1 ? '' : 's'} confirmada${d.asistentes === 1 ? '' : 's'}</div>` : ''}</div>`).join('');
+  const v = $('fam').value;
+  $('fam').innerHTML = '<option value="">Elige tu familia…</option>' + D.familias.map(f => `<option value="${esc(f.id)}">${esc(f.label)}${D.respondieron.includes(f.id) ? ' ✓' : ''}</option>`).join('');
+  $('fam').value = v;
+  $('chips').innerHTML = D.domingos.map(d => `<button type="button" data-d="${d.id}" class="${sel.has(d.id) ? 'on' : ''}">${esc(d.fecha.replace('Domingo ', ''))} · ${esc(d.vela)}</button>`).join('');
+}
+function cargar() { return fetch('/api/adviento', { cache: 'no-store' }).then(r => r.json()).then(j => { if (j.domingos) { D = j; pintar(); } }).catch(() => {}); }
+cargar();
+
+$('ops').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; opcion = b.dataset.o;
+  document.querySelectorAll('#ops button').forEach(x => x.classList.toggle('on', x === b));
+  $('bloqueDom').hidden = opcion === 'no'; $('bloquePers').hidden = opcion === 'no'; $('bloqueZona').hidden = opcion !== 'anfitrion';
+  $('lbDom').textContent = opcion === 'anfitrion' ? '¿Qué domingos podrían recibirnos?' : '¿A qué domingos podrían llegar?'; });
+$('chips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+  sel.has(b.dataset.d) ? sel.delete(b.dataset.d) : sel.add(b.dataset.d); b.classList.toggle('on'); });
+
+$('f').addEventListener('submit', async e => {
+  e.preventDefault(); const m = $('msg'); m.className = 'msg err'; m.textContent = '';
+  const data = { accion: 'responder', familiaId: $('fam').value, nombre: $('nom').value.trim(), opcion, domingos: [...sel], personas: $('pers').value, zona: $('zona').value.trim(), comentario: $('com').value.trim() };
+  if (!data.familiaId) return m.textContent = 'Elige tu familia';
+  if (data.nombre.length < 2) return m.textContent = 'Escribe tu nombre';
+  if (!opcion) return m.textContent = 'Elige cómo quieren participar';
+  if (opcion !== 'no' && !sel.size) return m.textContent = 'Marca al menos un domingo';
+  $('send').disabled = true;
+  try {
+    const r = await fetch('/api/adviento', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'No se pudo enviar');
+    m.className = 'msg ok';
+    m.textContent = opcion === 'anfitrion' ? '🏠 ¡Gracias por abrir tu hogar! Nos pondremos de acuerdo pronto.' : opcion === 'asistir' ? '🕯️ ¡Qué alegría! Nos vemos en los encuentros.' : '🙏 Gracias por avisar, los llevamos en oración.';
+    await cargar(); document.getElementById('domingos').scrollIntoView({ behavior: 'smooth' });
+  } catch (err) { m.textContent = '😕 ' + err.message; }
+  finally { $('send').disabled = false; }
+});
+</script>
+</body>
+</html>
