@@ -161,6 +161,18 @@
     </div>
     <p style="color:var(--muted);font-weight:700;font-size:.85rem;margin-top:10px">El sorteo es secreto también para el panel. Si alguien olvida su PIN, usa "Nuevo PIN" y compártelo solo con esa persona.</p>
   </div>
+  <div class="panel" style="margin-top:20px">
+    <h2 style="font-family:'Mountains of Christmas',cursive;color:#6b2d8c;font-size:2rem;margin-bottom:6px">🕯️ Adviento · 4 domingos, 4 hogares <span id="advN" style="font-family:Nunito;font-size:1rem;color:var(--muted)"></span></h2>
+    <div id="advDom" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0 14px"></div>
+    <p id="advFalta" style="font-weight:800;font-size:.9rem;color:var(--muted);margin-bottom:12px"></p>
+    <div class="tools"><a class="btn alt" href="/adviento" target="_blank" style="text-decoration:none">🔗 Ver encuesta</a><button class="btn" id="advCsv" type="button">⬇ Descargar Excel (CSV)</button></div>
+    <div class="tbl-wrap">
+      <table style="min-width:720px">
+        <thead><tr><th>Familia</th><th>Responde</th><th>Opción</th><th>Domingos</th><th class="num">Personas</th><th>Zona</th><th>Comentario</th></tr></thead>
+        <tbody id="advRows"></tbody>
+      </table>
+    </div>
+  </div>
   <p class="note">Se actualiza solo cada 20 segundos. Si una familia vuelve a enviar con el mismo nombre, se actualiza su respuesta.</p>
 </main>
 
@@ -192,6 +204,7 @@ async function load(fromLogin) {
     render();
     loadWishes();
     loadAmigo();
+    loadAdviento();
   } catch (e) {
     if (fromLogin) $('loginErr').textContent = e.message;
     else $('updated').textContent = '⚠ ' + e.message;
@@ -275,6 +288,42 @@ $('wRows').addEventListener('click', async e => {
   await fetch('/api/deseos?id=' + encodeURIComponent(b.dataset.id), { method: 'DELETE', headers: { 'x-pin': PIN } });
   loadWishes();
 });
+
+// ---------- Adviento ----------
+let adv = { domingos: [], respuestas: [] };
+const OPC = { anfitrion: '🏠 Recibe', asistir: '🕯️ Asiste', no: '🙏 No puede' };
+const corto = id => { const d = adv.domingos.find(x => x.id === id); return d ? d.fecha.replace('Domingo ', '') : id; };
+async function loadAdviento() {
+  try {
+    const r = await fetch('/api/adviento?accion=admin', { headers: { 'x-pin': PIN }, cache: 'no-store' });
+    if (!r.ok) return;
+    adv = await r.json();
+    const R = adv.respuestas;
+    $('advN').textContent = `(${R.length} respuesta${R.length === 1 ? '' : 's'})`;
+    $('advDom').innerHTML = adv.domingos.map(d => {
+      const hosts = R.filter(x => x.opcion === 'anfitrion' && x.domingos.includes(d.id));
+      const pers = R.filter(x => x.opcion !== 'no' && x.domingos.includes(d.id)).reduce((s, x) => s + (x.personas || 0), 0);
+      return `<div class="stat" style="text-align:left;border-left:6px solid ${d.color}">
+        <div class="t" style="color:${d.color}">🕯️ ${esc(d.vela)}</div><div style="font-weight:900">${esc(d.fecha.replace('Domingo ', ''))}</div>
+        <div style="font-size:.85rem;margin-top:4px">${hosts.length ? hosts.map(h => '🏠 ' + esc(h.familia)).join('<br>') : '<span style="color:var(--muted)">Sin anfitrión</span>'}</div>
+        <div style="font-size:.8rem;font-weight:800;color:var(--green);margin-top:4px">🙋 ${pers} persona${pers === 1 ? '' : 's'}</div></div>`;
+    }).join('');
+    $('advFalta').textContent = adv.sinResponder && adv.sinResponder.length ? '⏳ Faltan por responder: ' + adv.sinResponder.join(', ') : '✅ Todas las familias respondieron';
+    $('advRows').innerHTML = R.length ? R.map(x => `<tr>
+      <td class="fam">${esc(x.familia)}</td><td>${esc(x.nombre)}</td><td>${OPC[x.opcion] || ''}</td>
+      <td style="font-size:.85rem">${x.domingos.map(corto).map(esc).join('<br>') || '—'}</td>
+      <td class="num">${x.opcion === 'no' ? '—' : x.personas}</td><td>${esc(x.zona || '')}</td>
+      <td style="font-size:.85rem;max-width:240px">${esc(x.comentario || '')}</td></tr>`).join('')
+      : '<tr><td colspan="7" class="empty">Aún no hay respuestas.</td></tr>';
+  } catch {}
+}
+$('advCsv').onclick = () => {
+  const c = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const lines = [['Familia', 'Responde', 'Opción', 'Domingos', 'Personas', 'Zona', 'Comentario'].map(c).join(',')]
+    .concat(adv.respuestas.map(x => [x.familia, x.nombre, (OPC[x.opcion] || '').replace(/^\S+ /, ''), x.domingos.map(corto).join(' / '), x.opcion === 'no' ? 0 : x.personas, x.zona, x.comentario].map(c).join(',')));
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' })), download: 'adviento-4-hogares.csv' });
+  a.click();
+};
 
 // ---------- Amigo secreto ----------
 const GUSTO_NOMBRE = {
